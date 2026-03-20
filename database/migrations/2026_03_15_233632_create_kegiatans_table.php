@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->boolean('is_publik')->default(false);
             $table->foreignId('divisi_id')->nullable()
                 ->constrained()->nullOnDelete();
-            $table->foreignId('created_by')
+            $table->foreignId('created_by')->nullable()
                 ->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
