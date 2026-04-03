@@ -1,29 +1,19 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PdfController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Landing Page Publik — bisa diakses tanpa login
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/kalender-data', [LandingController::class, 'kalender'])->name('kalender.data');
+Route::get('/kegiatan/{id}', [LandingController::class, 'detailKegiatan'])->name('kegiatan.detail');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';
-
-// Route export PDF — hanya bisa diakses user yang sudah login
+// Export PDF — hanya untuk yang sudah login
 Route::middleware(['auth'])->group(function () {
-    Route::get('/export/absensi/{id}', [PdfController::class, 'absensi'])
-        ->name('export.absensi');
-    Route::get('/export/keuangan', [PdfController::class, 'keuangan'])
-        ->name('export.keuangan');
+    Route::get('/export/absensi/{id}', [PdfController::class, 'absensi'])->name('export.absensi');
+    Route::get('/export/keuangan', [PdfController::class, 'keuangan'])->name('export.keuangan');
 });
+
+// Route bawaan Laravel Breeze
+require __DIR__ . '/auth.php';
