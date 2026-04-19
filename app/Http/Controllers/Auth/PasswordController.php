@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use App\Notifications\PasswordUpdatedNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
-class PasswordController extends Controller
+
+class PasswordController extends BaseController
 {
     /**
      * Update the user's password.
@@ -23,6 +25,9 @@ class PasswordController extends Controller
         $request->user()->update([
             'password' => Hash::make($validated['password']),
         ]);
+
+        // Kirim notifikasi ke user bahwa kata sandi berhasil diubah
+        $request->user()->notify(new PasswordUpdatedNotification());
 
         return back()->with('status', 'password-updated');
     }

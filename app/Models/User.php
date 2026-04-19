@@ -48,4 +48,22 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsTo(Divisi::class);
     }
+
+    // Relasi ke Laravel Notifications
+    public function notifications()
+    {
+        return $this->hasMany(
+            'Illuminate\Notifications\DatabaseNotification',
+            'notifiable_id'
+        )->where('notifiable_type', self::class)
+         ->orderBy('created_at', 'desc');
+    }
+
+    // Relasi ke notifikasi yang belum dibaca
+    public function unreadNotifications()
+    {
+        return $this->notifications()
+            ->whereNull('read_at')
+            ->orderBy('created_at', 'desc');
+    }
 }
