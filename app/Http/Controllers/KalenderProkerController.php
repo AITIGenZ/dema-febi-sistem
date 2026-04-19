@@ -9,6 +9,7 @@ use App\Http\Requests\StoreKalenderProkerRequest;
 use App\Http\Requests\UpdateKalenderProkerRequest;
 use App\Http\Resources\KalenderProkerResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KalenderProkerController extends Controller
 {
@@ -47,7 +48,7 @@ class KalenderProkerController extends Controller
             $query->where('is_publik', true);
         }
 
-        $kaleders = $query->paginate($request->get('per_page', 15));
+        $kaleders = $query->paginate($request->input('per_page', 15));
 
         return response()->json([
             'success' => true,
@@ -83,6 +84,7 @@ class KalenderProkerController extends Controller
     /**
      * Store a newly created kalender proker in storage.
      */
+    
     public function store(StoreKalenderProkerRequest $request)
     {
         try {
@@ -195,7 +197,7 @@ class KalenderProkerController extends Controller
         }
 
         // Publik only if not authenticated
-        if (!auth()->check()) {
+        if (!Auth::check()) {
             $query->where('is_publik', true);
         }
 

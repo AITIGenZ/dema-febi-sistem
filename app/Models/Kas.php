@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Kas extends Model
 {
@@ -27,8 +29,8 @@ class Kas extends Model
     protected static function booted(): void
     {
         static::creating(function ($kas) {
-            if (auth()->check()) {
-                $kas->created_by = auth()->id();
+            if (Auth::check()) {
+                $kas->created_by = Auth::id();
             }
         });
     }

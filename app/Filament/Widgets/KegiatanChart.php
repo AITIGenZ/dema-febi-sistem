@@ -28,13 +28,13 @@ class KegiatanChart extends ChartWidget
             11 => 'Nov',
             12 => 'Des',
         ];
-
-        $data = Kegiatan::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
+        $data = Kegiatan::selectRaw("strftime('%m', tanggal) as bulan, COUNT(*) as total")
             ->whereYear('tanggal', now()->year)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')
             ->toArray();
+            
 
         $chartData = [];
         for ($i = 1; $i <= 12; $i++) {

@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Kegiatan;
+use App\Models\Divisi;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class KalenderProker extends Model
 {
@@ -63,7 +69,11 @@ class KalenderProker extends Model
     public function isAllDay()
     {
         // Cek apakah event sepanjang hari
-        return $this->tgl_mulai->format('H:i') === '00:00' && 
+        if (! $this->tgl_mulai || ! $this->tgl_selesai) {
+            return false;
+        }
+
+        return $this->tgl_mulai->format('H:i') === '00:00' &&
                $this->tgl_selesai->format('H:i') === '23:59';
     }
 
@@ -200,15 +210,15 @@ class KalenderProker extends Model
 
         // Set created_by dan updated_by otomatis
         static::creating(function ($model) {
-            if (auth()->check()) {
-                $model->created_by = auth()->id();
-                $model->updated_by = auth()->id();
+            if (Auth::check()) {
+                $model->created_by = Auth::id();
+                $model->updated_by = Auth::id();
             }
         });
 
         static::updating(function ($model) {
-            if (auth()->check()) {
-                $model->updated_by = auth()->id();
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
             }
         });
 
@@ -227,9 +237,9 @@ class KalenderProker extends Model
             
             if ($users->count() > 0) {
                 try {
-                    \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\ProkerNotification($event, 'created'));
+                    Notification::send($users, new \App\Notifications\ProkerNotification($event, 'created'));
                 } catch (\Exception $e) {
-                    \Log::error('Gagal mengirim notifikasi ProkerNotification: ' . $e->getMessage());
+                    Log::error('Gagal mengirim notifikasi ProkerNotification: ' . $e->getMessage());
                 }
             }
         });
@@ -249,9 +259,9 @@ class KalenderProker extends Model
             
             if ($users->count() > 0) {
                 try {
-                    \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\ProkerNotification($event, 'updated'));
+                    Notification::send($users, new \App\Notifications\ProkerNotification($event, 'updated'));
                 } catch (\Exception $e) {
-                    \Log::error('Gagal mengirim notifikasi ProkerNotification: ' . $e->getMessage());
+                    Log::error('Gagal mengirim notifikasi ProkerNotification: ' . $e->getMessage());
                 }
             }
         });
