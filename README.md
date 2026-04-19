@@ -1,59 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏛️ Sistem Informasi Manajemen Anggota dan Kegiatan DEMA FEBI
+### UIN Mahmud Yunus Batusangkar
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![Filament](https://img.shields.io/badge/Filament-3.x-F59E0B?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Tentang Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sistem Informasi Manajemen Anggota dan Kegiatan DEMA FEBI adalah aplikasi berbasis web yang dirancang untuk mendigitalisasi seluruh proses operasional Dewan Eksekutif Mahasiswa Fakultas Ekonomi dan Bisnis Islam (DEMA FEBI) UIN Mahmud Yunus Batusangkar.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Sistem ini dibangun sebagai bagian dari mata kuliah **Proyek Sistem Informasi** Program Studi Sistem Informasi, FEBI UIN Mahmud Yunus Batusangkar, menggunakan metode pengembangan **Agile**.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🎯 Masalah yang Diselesaikan
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Masalah | Solusi |
+|---|---|
+| Pendataan anggota manual via WhatsApp/Excel | Sistem manajemen anggota digital terpusat |
+| Pendaftaran kegiatan via kertas/WA | Pendaftaran online dengan konfirmasi otomatis |
+| Absensi dicatat di kertas | Absensi digital per kegiatan dengan rekap |
+| Keuangan dan iuran tidak transparan | Sistem pencatatan kas dan iuran real-time |
+| Tidak ada kalender proker digital | Kalender interaktif yang bisa diakses publik |
+| Tidak ada arsip kegiatan terstruktur | Dashboard statistik dan arsip dokumen |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ✨ Fitur Utama
 
-### Premium Partners
+### 👥 Manajemen Anggota & Divisi
+- CRUD data anggota lengkap (nama, NIM, email, foto, divisi)
+- Manajemen divisi/departemen organisasi
+- Sistem role & permission 5 level (Super Admin, Admin, Pengurus, Anggota, Publik)
+- Filter dan pencarian data anggota
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 📅 Manajemen Kegiatan & Pendaftaran
+- Buat dan kelola kegiatan dengan detail lengkap
+- Pendaftaran online dengan sistem kuota
+- Konfirmasi pendaftaran (diterima/ditolak)
+- Arsip kegiatan yang telah berlangsung
 
-## Contributing
+### ✅ Absensi Digital
+- Rekam kehadiran: Hadir, Izin, Alpha
+- Rekap kehadiran per anggota dan per kegiatan
+- Export daftar hadir ke PDF
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 💰 Keuangan & Iuran
+- Pencatatan iuran anggota per bulan
+- Manajemen kas masuk dan kas keluar
+- Laporan keuangan yang dapat diexport ke PDF
+- Upload bukti pembayaran iuran
 
-## Code of Conduct
+### 🗓️ Kalender Program Kerja
+- Kalender interaktif dengan FullCalendar.js
+- Filter agenda per divisi
+- Dapat diakses publik tanpa login
+- Warna penanda berbeda per divisi
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 📊 Dashboard & Statistik
+- Statistik real-time: total anggota, kegiatan, iuran
+- Grafik anggota per divisi (Chart.js)
+- Grafik kegiatan per bulan sepanjang tahun
+- Widget statistik dengan indikator warna
 
-## Security Vulnerabilities
+### 🌐 Landing Page Publik
+- Halaman publik tanpa login
+- Info kegiatan terbaru
+- Kalender program kerja publik
+- Detail kegiatan dan pendaftaran publik
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🛠️ Tech Stack
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Komponen | Teknologi | Versi |
+|---|---|---|
+| Framework Backend | Laravel | 11.x |
+| Admin Panel | Filament PHP | 3.x |
+| Bahasa Pemrograman | PHP | 8.3 |
+| Database | MySQL | 8.x |
+| Role & Permission | Spatie Laravel Permission | 6.x |
+| Export PDF | DomPDF (barryvdh) | 3.x |
+| Export Excel | Maatwebsite Excel | 3.x |
+| Frontend Styling | Tailwind CSS | 3.x |
+| Grafik | Chart.js | 4.x |
+| Kalender | FullCalendar.js | 6.x |
+| Local Server | Laragon | 6.x |
+| Version Control | Git & GitHub | - |
+
+---
+
+## 🗄️ Struktur Database
+
+Sistem menggunakan **9 tabel** yang saling berelasi:
+
+```
+users           → Data anggota dan pengguna sistem
+divisis         → Data divisi/departemen DEMA FEBI
+kegiatans       → Data master kegiatan organisasi
+pendaftarans    → Data pendaftaran peserta kegiatan
+absensis        → Rekam kehadiran anggota per kegiatan
+iurans          → Data iuran bulanan anggota
+kas             → Arus kas masuk dan keluar organisasi
+kalender_prokers → Jadwal program kerja kalender
+dokumens        → File dokumen dan foto kegiatan
+```
+
+---
+
+## 👤 Akun Default (Seeder)
+
+| Role | Email | Password |
+|---|---|---|
+| Super Admin (Ketua) | ketua@demafebi.ac.id | password123 |
+| Admin (Sekjen) | sekjen@demafebi.ac.id | password123 |
+| Pengurus (Kadiv) | kadiv@demafebi.ac.id | password123 |
+| Anggota | anggota@demafebi.ac.id | password123 |
+
+> ⚠️ **Penting:** Ganti password default setelah pertama kali login!
+
+---
+
+## 🚀 Cara Instalasi
+
+### Prasyarat
+- PHP 8.3+
+- Composer
+- MySQL 8.x
+- Laragon / XAMPP / Herd
+- Node.js & NPM
+
+### Langkah Instalasi
+
+**1. Clone repository**
+```bash
+git clone https://github.com/AITIGenZ/dema-febi-sistem.git
+cd dema-febi-sistem
+```
+
+**2. Install dependencies PHP**
+```bash
+composer install
+```
+
+**3. Install dependencies NPM**
+```bash
+npm install
+npm run build
+```
+
+**4. Salin file environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+**5. Konfigurasi database di file `.env`**
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=dema_febi_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+**6. Jalankan migration dan seeder**
+```bash
+php artisan migrate:fresh --seed
+```
+
+**7. Jalankan server**
+```bash
+php artisan serve
+```
+
+**8. Buka di browser**
+```
+Landing Page : http://127.0.0.1:8000
+Admin Panel  : http://127.0.0.1:8000/admin
+```
+
+---
+
+## 📁 Struktur Folder Utama
+
+```
+dema-febi-sistem/
+├── app/
+│   ├── Filament/
+│   │   ├── Resources/          → Resource Filament per modul
+│   │   └── Widgets/            → Widget dashboard
+│   ├── Http/
+│   │   └── Controllers/        → Controller PDF & Landing Page
+│   └── Models/                 → Model Eloquent semua tabel
+├── database/
+│   ├── migrations/             → File migration 9 tabel
+│   └── seeders/                → Seeder role & user awal
+├── resources/
+│   └── views/
+│       ├── landing/            → Template Landing Page publik
+│       └── pdf/                → Template export PDF
+└── routes/
+    └── web.php                 → Routing aplikasi
+```
+
+---
+
+## 👥 Tim Pengembang
+
+| Nama | NIM | Peran |
+|---|---|---|
+| Alwy Farid Sayuti | 2330407003 | Project Manager & Backend Developer |
+| Afdal Ramadhani | 2330407001 | Backend Developer |
+| Shafira Anazifa | 2330407062 | Frontend Developer |
+| Nurkamila Chaerani | 2330407060 | Analyst & Dokumentasi |
+
+**Dosen Pembimbing:** Abdurrahman Niarman, M.Sc.
+**Program Studi:** Sistem Informasi
+**Institusi:** UIN Mahmud Yunus Batusangkar
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dikembangkan untuk keperluan akademik mata kuliah Proyek Sistem Informasi UIN Mahmud Yunus Batusangkar.
+
+© 2026 Kelompok 5 - Tim Develop | Sistem Informasi FEBI UIN Mahmud Yunus Batusangkar
