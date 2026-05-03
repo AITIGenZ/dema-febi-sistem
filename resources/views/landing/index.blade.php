@@ -31,14 +31,13 @@
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
-                    <span class="text-white font-bold text-sm">DF</span>
-                </div>
+                <img src="/images/logo.png" class="h-10 w-10 rounded-full object-cover">
+                <img src="/images/kabinet.png" class="h-10 w-10 rounded-full object-cover">
                 <div>
-                    <p class="font-bold text-blue-800 text-sm leading-tight">DEMA FEBI</p>
-                    <p class="text-gray-500 text-xs">UIN Mahmud Yunus Batusangkar</p>
-                </div>
+                    <h1 class ="font-bold">DEMA FEBI</h1>
+                    <p class="text-sm text-gray-500">UIN Mahmud Yunus Batusangkar</p>
             </div>
+            
             <div class="flex items-center gap-4">
                 <a href="#kegiatan" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kegiatan</a>
                 <a href="#kalender" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kalender</a>
@@ -61,7 +60,7 @@
             </h2>
             <p class="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
                 UIN Mahmud Yunus Batusangkar — Bersama membangun mahasiswa 
-                yang berkarakter, berprestasi, dan berdedikasi.
+                yang berkarakter, berprestasi dan berdedikasi.
             </p>
             <div class="flex justify-center gap-8">
                 <div class="text-center">
