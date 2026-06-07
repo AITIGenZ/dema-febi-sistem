@@ -34,15 +34,16 @@
                 <img src="/images/logo.png" class="h-10 w-10 rounded-full object-cover">
                 <img src="/images/kabinet.png" class="h-10 w-10 rounded-full object-cover">
                 <div>
-                    <h1 class ="font-bold">DEMA FEBI</h1>
+                    <h1 class="font-bold">DEMA FEBI</h1>
                     <p class="text-sm text-gray-500">UIN Mahmud Yunus Batusangkar</p>
+                </div>
             </div>
             
             <div class="flex items-center gap-4">
                 <a href="#kegiatan" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kegiatan</a>
                 <a href="#kalender" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kalender</a>
                 <a href="{{ url('/admin') }}" 
-                   class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
                     Login Admin
                 </a>
             </div>
@@ -92,7 +93,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($kegiatan as $item)
                     <a href="{{ route('kegiatan.detail', $item->id) }}"
-                       class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden card-hover block">
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden card-hover block">
                         {{-- Header card --}}
                         <div class="bg-blue-700 px-5 py-3">
                             <span class="text-white text-xs font-medium uppercase tracking-wide">

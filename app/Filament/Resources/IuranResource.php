@@ -16,7 +16,7 @@ class IuranResource extends Resource
     protected static ?string $model = Iuran::class;
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Data Iuran';
-    protected static ?string $modelLabel = 'Iuran';
+    protected static ?string $pluralModelLabel = 'Iuran';
     protected static ?string $navigationGroup = 'Keuangan';
     protected static ?int $navigationSort = 1;
 
