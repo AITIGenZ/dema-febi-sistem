@@ -38,9 +38,11 @@ class User extends Authenticatable implements FilamentUser
     }
 
     // Hanya user aktif yang bisa akses panel Filament
+    // Pimpinan dan Pengurus bisa akses panel Filament
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->status === 'aktif';
+        return $this->status === 'aktif' &&
+            $this->hasAnyRole(['pimpinan', 'pengurus']);
     }
 
     // Relasi ke tabel divisi
@@ -56,7 +58,7 @@ class User extends Authenticatable implements FilamentUser
             'Illuminate\Notifications\DatabaseNotification',
             'notifiable_id'
         )->where('notifiable_type', self::class)
-         ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc');
     }
 
     // Relasi ke notifikasi yang belum dibaca

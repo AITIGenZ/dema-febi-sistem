@@ -59,6 +59,10 @@ class UserResource extends Resource
                     Forms\Components\Select::make('roles')
                         ->label('Role / Jabatan')
                         ->relationship('roles', 'name')
+                        ->options([
+                            'pimpinan' => 'Pimpinan (Ketua/Sekretaris/Bendahara)',
+                            'pengurus' => 'Pengurus (Kadis/Sekdis/Staf)',
+                        ])
                         ->multiple()
                         ->preload()
                         ->searchable(),

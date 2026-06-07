@@ -10,40 +10,59 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Buat akun Super Admin (Ketua)
-        $superAdmin = User::create([
-            'name' => 'Ketua DEMA FEBI',
-            'email' => 'ketua@demafebi.ac.id',
-            'password' => Hash::make('password123'),
-            'status' => 'aktif',
-        ]);
-        $superAdmin->assignRole('super_admin');
+        // Akun Pimpinan — Ketua Umum
+        $ketua = User::updateOrCreate(
+            ['email' => 'ketua@demafebi.ac.id'],
+            [
+                'name' => 'Ketua DEMA FEBI',
+                'password' => Hash::make('password123'),
+                'status' => 'aktif',
+            ]
+        );
+        $ketua->syncRoles(['pimpinan']);
 
-        // Buat akun Admin (Sekjen)
-        $admin = User::create([
-            'name' => 'Sekretaris Jenderal',
-            'email' => 'sekjen@demafebi.ac.id',
-            'password' => Hash::make('password123'),
-            'status' => 'aktif',
-        ]);
-        $admin->assignRole('admin');
+        // Akun Pimpinan — Sekretaris
+        $sekretaris = User::updateOrCreate(
+            ['email' => 'sekretaris@demafebi.ac.id'],
+            [
+                'name' => 'Sekretaris DEMA FEBI',
+                'password' => Hash::make('password123'),
+                'status' => 'aktif',
+            ]
+        );
+        $sekretaris->syncRoles(['pimpinan']);
 
-        // Buat akun Pengurus contoh
-        $pengurus = User::create([
-            'name' => 'Kepala Divisi',
-            'email' => 'kadiv@demafebi.ac.id',
-            'password' => Hash::make('password123'),
-            'status' => 'aktif',
-        ]);
-        $pengurus->assignRole('pengurus');
+        // Akun Pimpinan — Bendahara
+        $bendahara = User::updateOrCreate(
+            ['email' => 'bendahara@demafebi.ac.id'],
+            [
+                'name' => 'Bendahara DEMA FEBI',
+                'password' => Hash::make('password123'),
+                'status' => 'aktif',
+            ]
+        );
+        $bendahara->syncRoles(['pimpinan']);
 
-        // Buat akun Anggota contoh
-        $anggota = User::create([
-            'name' => 'Anggota DEMA',
-            'email' => 'anggota@demafebi.ac.id',
-            'password' => Hash::make('password123'),
-            'status' => 'aktif',
-        ]);
-        $anggota->assignRole('anggota');
+        // Akun Pengurus — Kepala Dinas
+        $kadiv = User::updateOrCreate(
+            ['email' => 'kadis@demafebi.ac.id'],
+            [
+                'name' => 'Kepala Dinas',
+                'password' => Hash::make('password123'),
+                'status' => 'aktif',
+            ]
+        );
+        $kadiv->syncRoles(['pengurus']);
+
+        // Akun Pengurus — Staf Dinas
+        $staf = User::updateOrCreate(
+            ['email' => 'staf@demafebi.ac.id'],
+            [
+                'name' => 'Staf Dinas',
+                'password' => Hash::make('password123'),
+                'status' => 'aktif',
+            ]
+        );
+        $staf->syncRoles(['pengurus']);
     }
 }
