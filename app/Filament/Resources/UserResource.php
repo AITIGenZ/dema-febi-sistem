@@ -17,7 +17,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Data Anggota';
-    protected static ?string $modelLabel = 'Anggota';
+    protected static ?string $pluralModelLabel = 'Anggota';
     protected static ?string $navigationGroup = 'Manajemen Anggota';
 
     public static function form(Form $form): Form
@@ -59,6 +59,10 @@ class UserResource extends Resource
                     Forms\Components\Select::make('roles')
                         ->label('Role / Jabatan')
                         ->relationship('roles', 'name')
+                        ->options([
+                            'pimpinan' => 'Pimpinan (Ketua/Sekretaris/Bendahara)',
+                            'pengurus' => 'Pengurus (Kadis/Sekdis/Staf)',
+                        ])
                         ->multiple()
                         ->preload()
                         ->searchable(),

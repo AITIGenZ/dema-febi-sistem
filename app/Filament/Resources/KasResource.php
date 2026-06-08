@@ -16,7 +16,7 @@ class KasResource extends Resource
     protected static ?string $model = Kas::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Kas Organisasi';
-    protected static ?string $modelLabel = 'Kas';
+    protected static ?string $pluralModelLabel = 'Kas Pengurus';
     protected static ?string $navigationGroup = 'Keuangan';
     protected static ?int $navigationSort = 2;
 

@@ -17,7 +17,7 @@ class KalenderProkerResource extends Resource
     protected static ?string $model = KalenderProker::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
     protected static ?string $navigationLabel = 'Kalender Proker';
-    protected static ?string $modelLabel = 'Kalender Proker';
+    protected static ?string $pluralModelLabel = 'Kalender Proker';
     protected static ?string $navigationGroup = 'Program Kerja';
 
     public static function form(Form $form): Form

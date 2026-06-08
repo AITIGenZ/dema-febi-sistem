@@ -2,29 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DivisiResource\Pages;
-use App\Models\Divisi;
+use App\Filament\Resources\DinasResource\Pages;
+use App\Models\Dinas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class DivisiResource extends Resource
+class DinasResource extends Resource
 {
-    protected static ?string $model = Divisi::class;
+    protected static ?string $model = DinasResource::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
-    protected static ?string $navigationLabel = 'Data Divisi';
-    protected static ?string $modelLabel = 'Divisi';
+    protected static ?string $navigationLabel = 'Data Dinas';
+    protected static ?string $pluralModelLabel = 'Dinas';
     protected static ?string $navigationGroup = 'Manajemen Anggota';
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Section::make('Informasi Divisi')
+            Forms\Components\Section::make('Informasi Dinas')
                 ->schema([
-                    Forms\Components\TextInput::make('nama_divisi')
-                        ->label('Nama Divisi')
+                    Forms\Components\TextInput::make('nama_dinas')
+                        ->label('Nama Dinas')
                         ->required()
                         ->maxLength(255),
 
@@ -40,8 +40,8 @@ class DivisiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_divisi')
-                    ->label('Nama Divisi')
+                Tables\Columns\TextColumn::make('nama_dinas')
+                    ->label('Nama Dinas')
                     ->searchable()
                     ->sortable(),
 
@@ -74,9 +74,9 @@ class DivisiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDivisis::route('/'),
-            'create' => Pages\CreateDivisi::route('/create'),
-            'edit' => Pages\EditDivisi::route('/{record}/edit'),
+            'index' => Pages\ListDinas::route('/'),
+            'create' => Pages\CreateDinas::route('/create'),
+            'edit' => Pages\EditDinas::route('/{record}/edit'),
         ];
     }
 }
