@@ -28,31 +28,39 @@
 <body class="bg-gray-50 text-gray-800">
 
     {{-- NAVBAR --}}
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
-                    <span class="text-white font-bold text-sm">DF</span>
-                </div>
-                <div>
-                    <p class="font-bold text-blue-800 text-sm leading-tight">DEMA FEBI</p>
-                    <p class="text-gray-500 text-xs">UIN Mahmud Yunus Batusangkar</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <a href="#kegiatan" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kegiatan</a>
-                <a href="#kalender" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kalender</a>
-                <a href="{{ url('/admin') }}" 
-                   class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
-                    Login Admin
-                </a>
+        <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-full mx-auto px-10 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="/images/logo uin.png" class="h-10 w-10 object-contain">
+            <img src="/images/logo.png" class="h-10 w-10 rounded-full object-cover">
+            <img src="/images/kabinet.png" class="h-10 w-10 rounded-full object-cover">
+            <div>
+                <h1 class="font-bold">DEMA FEBI</h1>
+                <p class="text-sm text-gray-500">UIN Mahmud Yunus Batusangkar</p>
             </div>
         </div>
-    </nav>
-
+        <div class="flex items-center gap-4">
+            <a href="#kegiatan" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kegiatan</a>
+            <a href="#kalender" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kalender</a>
+            <a href="{{ url('/admin') }}" 
+               class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                Login Admin
+            </a>
+        </div>
+    </div>
+</nav>
     {{-- HERO SECTION --}}
-    <section class="hero-gradient text-white py-20 px-4">
-        <div class="max-w-4xl mx-auto text-center">
+    <section class="hero-gradient text-white py-20 px-4 relative overflow-hidden">
+        <img src="/images/Pengurus DEMA.jpeg" alt=""
+     class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none select-none">
+
+    {{-- Foto Pengurus (letakkan foto di public/images/pengurus/) --}}
+    <img src="/images/pengurus/ketua.png" alt=""
+         class="absolute bottom-0 left-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+    <img src="/images/pengurus/wakil.png" alt=""
+         class="absolute bottom-0 right-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
             <h1 class="text-4xl font-bold mb-4">
                 Dewan Eksekutif Mahasiswa
             </h1>
