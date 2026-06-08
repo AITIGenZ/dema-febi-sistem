@@ -29,7 +29,7 @@
 
     {{-- NAVBAR --}}
     <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="max-w-full mx-auto px-10 py-3 flex items-center">
             <div class="flex items-center gap-3">
                 <img src="/images/logo.png" class="h-10 w-10 rounded-full object-cover">
                 <img src="/images/kabinet.png" class="h-10 w-10 rounded-full object-cover">
@@ -50,8 +50,15 @@
     </nav>
 
     {{-- HERO SECTION --}}
-    <section class="hero-gradient text-white py-20 px-4">
-        <div class="max-w-4xl mx-auto text-center">
+    <<section class="hero-gradient text-white py-20 px-4 relative overflow-hidden">
+
+    {{-- Foto Pengurus (letakkan foto di public/images/pengurus/) --}}
+    <img src="/images/pengurus/ketua.png" alt=""
+         class="absolute bottom-0 left-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+    <img src="/images/pengurus/wakil.png" alt=""
+         class="absolute bottom-0 right-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
             <h1 class="text-4xl font-bold mb-4">
                 Dewan Eksekutif Mahasiswa
             </h1>
