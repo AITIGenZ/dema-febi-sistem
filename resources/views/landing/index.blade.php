@@ -29,21 +29,21 @@
 
     {{-- NAVBAR --}}
     <nav class="bg-white shadow-md sticky top-0 z-50">
-        <div class="max-w-full mx-auto px-10 py-3 flex items-center">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="/images/logo.png" class="h-10 w-10 rounded-full object-cover">
-                <img src="/images/kabinet.png" class="h-10 w-10 rounded-full object-cover">
+                <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">DF</span>
+                </div>
                 <div>
-                    <h1 class="font-bold">DEMA FEBI</h1>
-                    <p class="text-sm text-gray-500">UIN Mahmud Yunus Batusangkar</p>
+                    <p class="font-bold text-blue-800 text-sm leading-tight">DEMA FEBI</p>
+                    <p class="text-gray-500 text-xs">UIN Mahmud Yunus Batusangkar</p>
                 </div>
             </div>
-            
             <div class="flex items-center gap-4">
                 <a href="#kegiatan" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kegiatan</a>
                 <a href="#kalender" class="text-gray-600 hover:text-blue-700 text-sm font-medium">Kalender</a>
                 <a href="{{ url('/admin') }}" 
-                class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
+                   class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition">
                     Login Admin
                 </a>
             </div>
@@ -51,15 +51,8 @@
     </nav>
 
     {{-- HERO SECTION --}}
-    <<section class="hero-gradient text-white py-20 px-4 relative overflow-hidden">
-
-    {{-- Foto Pengurus (letakkan foto di public/images/pengurus/) --}}
-    <img src="/images/pengurus/ketua.png" alt=""
-         class="absolute bottom-0 left-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
-    <img src="/images/pengurus/wakil.png" alt=""
-         class="absolute bottom-0 right-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
-
-    <div class="max-w-4xl mx-auto text-center relative z-10">
+    <section class="hero-gradient text-white py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl font-bold mb-4">
                 Dewan Eksekutif Mahasiswa
             </h1>
@@ -68,7 +61,7 @@
             </h2>
             <p class="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
                 UIN Mahmud Yunus Batusangkar — Bersama membangun mahasiswa 
-                yang berkarakter, berprestasi dan berdedikasi.
+                yang berkarakter, berprestasi, dan berdedikasi.
             </p>
             <div class="flex justify-center gap-8">
                 <div class="text-center">
@@ -100,7 +93,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($kegiatan as $item)
                     <a href="{{ route('kegiatan.detail', $item->id) }}"
-                    class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden card-hover block">
+                       class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden card-hover block">
                         {{-- Header card --}}
                         <div class="bg-blue-700 px-5 py-3">
                             <span class="text-white text-xs font-medium uppercase tracking-wide">
