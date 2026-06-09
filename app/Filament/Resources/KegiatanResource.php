@@ -4,19 +4,20 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KegiatanResource\Pages;
 use App\Models\Kegiatan;
-use App\Models\Divisi;
+use App\Models\Dinas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Auth;
 
 class KegiatanResource extends Resource
 {
+    use \App\Filament\Traits\PengurusCanManage;
     protected static ?string $model = Kegiatan::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationLabel = 'Data Kegiatan';
+    protected static ?string $modelLabel = 'Kegiatan';
     protected static ?string $pluralModelLabel = 'Kegiatan';
     protected static ?string $navigationGroup = 'Manajemen Kegiatan';
 
@@ -56,11 +57,11 @@ class KegiatanResource extends Resource
                         ->minValue(1)
                         ->placeholder('Kosongkan jika tidak terbatas'),
 
-                    Forms\Components\Select::make('divisi_id')
-                        ->label('Divisi Penyelenggara')
-                        ->options(Divisi::all()->pluck('nama_divisi', 'id'))
+                    Forms\Components\Select::make('dinas_id')
+                        ->label('Dinas Penyelenggara')
+                        ->options(Dinas::all()->pluck('nama_dinas', 'id'))
                         ->searchable()
-                        ->placeholder('Pilih Divisi'),
+                        ->placeholder('Pilih Dinas'),
 
                     Forms\Components\Toggle::make('is_publik')
                         ->label('Tampilkan ke Publik')
@@ -110,8 +111,8 @@ class KegiatanResource extends Resource
                     ->label('Kuota')
                     ->default('Tidak terbatas'),
 
-                Tables\Columns\TextColumn::make('divisi.nama_divisi')
-                    ->label('Divisi')
+                Tables\Columns\TextColumn::make('dinas.nama_dinas')
+                    ->label('Dinas')
                     ->badge()
                     ->color('info'),
 
@@ -135,8 +136,11 @@ class KegiatanResource extends Resource
                         'olahraga' => 'Olahraga',
                         'lainnya' => 'Lainnya',
                     ]),
-                Tables\Filters\SelectFilter::make('divisi')
-                    ->relationship('divisi', 'nama_divisi'),
+
+                Tables\Filters\SelectFilter::make('dinas_id')
+                    ->label('Dinas')
+                    ->options(Dinas::pluck('nama_dinas', 'id')),
+
                 Tables\Filters\TernaryFilter::make('is_publik')
                     ->label('Tampil ke Publik'),
             ])

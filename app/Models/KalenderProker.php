@@ -12,7 +12,7 @@ class KalenderProker extends Model
 
     protected $fillable = [
         'kegiatan_id',
-        'divisi_id',
+        'dinas_id',
         'tgl_mulai',
         'tgl_selesai',
         'warna',
@@ -37,9 +37,9 @@ class KalenderProker extends Model
         return $this->belongsTo(Kegiatan::class);
     }
 
-    public function divisi()
+    public function dinas()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Dinas::class, 'dinas_id');
     }
 
     // ========== TAMBAHAN: Relasi Baru ==========
@@ -63,8 +63,8 @@ class KalenderProker extends Model
     public function isAllDay()
     {
         // Cek apakah event sepanjang hari
-        return $this->tgl_mulai->format('H:i') === '00:00' && 
-               $this->tgl_selesai->format('H:i') === '23:59';
+        return $this->tgl_mulai->format('H:i') === '00:00' &&
+            $this->tgl_selesai->format('H:i') === '23:59';
     }
 
     public function getStart()
@@ -87,7 +87,7 @@ class KalenderProker extends Model
             'className' => $this->is_publik ? 'event-publik' : 'event-private',
             'extendedProps' => [
                 'kegiatan_id' => $this->kegiatan_id,
-                'divisi' => $this->divisi ? $this->divisi->nama_divisi : null,
+                'dinas' => $this->dinas ? $this->dinas->nama_dinas : null,
                 'deskripsi' => $this->kegiatan ? $this->kegiatan->deskripsi : null,
                 'is_publik' => $this->is_publik,
                 'status' => $this->status ?? 'scheduled',
@@ -96,7 +96,7 @@ class KalenderProker extends Model
     }
 
     // ========== TAMBAHAN: Helper Methods ==========
-    
+
     /**
      * Mendapatkan warna teks yang kontras dengan background
      */
@@ -104,15 +104,15 @@ class KalenderProker extends Model
     {
         // Hapus # jika ada
         $hexColor = ltrim($hexColor, '#');
-        
+
         // Konversi ke RGB
         $r = hexdec(substr($hexColor, 0, 2));
         $g = hexdec(substr($hexColor, 2, 2));
         $b = hexdec(substr($hexColor, 4, 2));
-        
+
         // Hitung luminance
         $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
-        
+
         return $luminance > 0.5 ? '#000000' : '#ffffff';
     }
 
@@ -135,9 +135,9 @@ class KalenderProker extends Model
     /**
      * Scope untuk filter per divisi
      */
-    public function scopeByDivision($query, $divisiId)
+    public function scopeByDivision($query, $dinasId)
     {
-        return $query->where('divisi_id', $divisiId);
+        return $query->where('dinas_id', $dinasId);
     }
 
     /**
@@ -147,11 +147,11 @@ class KalenderProker extends Model
     {
         return $query->where(function ($q) use ($start, $end) {
             $q->whereBetween('tgl_mulai', [$start, $end])
-              ->orWhereBetween('tgl_selesai', [$start, $end])
-              ->orWhere(function ($q) use ($start, $end) {
-                  $q->where('tgl_mulai', '<=', $start)
-                    ->where('tgl_selesai', '>=', $end);
-              });
+                ->orWhereBetween('tgl_selesai', [$start, $end])
+                ->orWhere(function ($q) use ($start, $end) {
+                    $q->where('tgl_mulai', '<=', $start)
+                        ->where('tgl_selesai', '>=', $end);
+                });
         });
     }
 
@@ -215,16 +215,16 @@ class KalenderProker extends Model
         // Trigger notifikasi setelah event dibuat
         static::created(function ($event) {
             // Load relationships for notification
-            $event->load('kegiatan', 'divisi');
-            
+            $event->load('kegiatan', 'dinas');
+
             // Kirim notifikasi ke divisi terkait atau semua user
-            if ($event->divisi) {
-                $users = User::where('divisi_id', $event->divisi_id)->where('status', 'aktif')->get();
+            if ($event->dinas) {
+                $users = User::where('dinas_id', $event->dinas_id)->where('status', 'aktif')->get();
             } else {
                 // Jika tidak ada divisi, kirim ke semua user aktif
                 $users = User::where('status', 'aktif')->get();
             }
-            
+
             if ($users->count() > 0) {
                 try {
                     \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\ProkerNotification($event, 'created'));
@@ -237,16 +237,16 @@ class KalenderProker extends Model
         // Trigger notifikasi setelah event diupdate
         static::updated(function ($event) {
             // Load relationships for notification
-            $event->load('kegiatan', 'divisi');
-            
+            $event->load('kegiatan', 'dinas');
+
             // Kirim notifikasi ke divisi terkait atau semua user
-            if ($event->divisi) {
-                $users = User::where('divisi_id', $event->divisi_id)->where('status', 'aktif')->get();
+            if ($event->dinas) {
+                $users = User::where('dinas_id', $event->dinas_id)->where('status', 'aktif')->get();
             } else {
                 // Jika tidak ada divisi, kirim ke semua user aktif
                 $users = User::where('status', 'aktif')->get();
             }
-            
+
             if ($users->count() > 0) {
                 try {
                     \Illuminate\Support\Facades\Notification::send($users, new \App\Notifications\ProkerNotification($event, 'updated'));

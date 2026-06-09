@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 
 class PendaftaranResource extends Resource
 {
+    use \App\Filament\Traits\PimpinanOnly;
     protected static ?string $model = Pendaftaran::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationLabel = 'Pendaftaran Kegiatan';

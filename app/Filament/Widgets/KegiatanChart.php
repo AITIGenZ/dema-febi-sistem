@@ -7,6 +7,10 @@ use Filament\Widgets\ChartWidget;
 
 class KegiatanChart extends ChartWidget
 {
+    public static function canView(): bool
+    {
+        return auth()->user()->hasRole('pimpinan');
+    }
     protected static ?string $heading = 'Kegiatan Sepanjang Tahun';
     protected static ?string $description = 'Jumlah kegiatan DEMA FEBI per bulan tahun ini';
     protected static ?int $sort = 3;

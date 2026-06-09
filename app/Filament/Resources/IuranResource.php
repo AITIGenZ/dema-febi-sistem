@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 
 class IuranResource extends Resource
 {
+    use \App\Filament\Traits\PimpinanOnly;
     protected static ?string $model = Iuran::class;
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Data Iuran';

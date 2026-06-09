@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use App\Models\Divisi;
+use App\Models\Dinas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
+    // Hanya pimpinan yang bisa akses menu ini
+    use \App\Filament\Traits\PimpinanOnly;
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Data Anggota';
@@ -50,11 +52,11 @@ class UserResource extends Resource
 
             Forms\Components\Section::make('Informasi Organisasi')
                 ->schema([
-                    Forms\Components\Select::make('divisi_id')
-                        ->label('Divisi')
-                        ->options(Divisi::all()->pluck('nama_divisi', 'id'))
+                    Forms\Components\Select::make('dinas_id')
+                        ->label('Dinas')
+                        ->options(\App\Models\Dinas::pluck('nama_dinas', 'id'))
                         ->searchable()
-                        ->placeholder('Pilih Divisi'),
+                        ->placeholder('Pilih Dinas'),
 
                     Forms\Components\Select::make('roles')
                         ->label('Role / Jabatan')
@@ -121,8 +123,8 @@ class UserResource extends Resource
                     ->label('Email')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('divisi.nama_divisi')
-                    ->label('Divisi')
+                Tables\Columns\TextColumn::make('dinas.nama_dinas')
+                    ->label('Dinas')
                     ->badge()
                     ->color('info'),
 
@@ -150,8 +152,9 @@ class UserResource extends Resource
                         'nonaktif' => 'Non Aktif',
                     ]),
 
-                Tables\Filters\SelectFilter::make('divisi')
-                    ->relationship('divisi', 'nama_divisi'),
+                Tables\Filters\SelectFilter::make('dinas_id')
+                    ->label('Dinas')
+                    ->options(\App\Models\Dinas::pluck('nama_dinas', 'id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

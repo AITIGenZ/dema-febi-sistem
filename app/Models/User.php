@@ -19,7 +19,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'phone',
         'photo',
-        'divisi_id',
+        'dinas_id',
         'status',
         'password',
     ];
@@ -46,9 +46,9 @@ class User extends Authenticatable implements FilamentUser
     }
 
     // Relasi ke tabel divisi
-    public function divisi()
+    public function dinas()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Dinas::class, 'dinas_id');
     }
 
     // Relasi ke Laravel Notifications

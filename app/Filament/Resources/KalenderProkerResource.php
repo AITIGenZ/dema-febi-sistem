@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KalenderProkerResource\Pages;
 use App\Models\KalenderProker;
 use App\Models\Kegiatan;
-use App\Models\Divisi;
+use App\Models\Dinas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,9 +14,11 @@ use Filament\Tables\Table;
 
 class KalenderProkerResource extends Resource
 {
+    use \App\Filament\Traits\PengurusCanManage;
     protected static ?string $model = KalenderProker::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
     protected static ?string $navigationLabel = 'Kalender Proker';
+    protected static ?string $modelLabel = 'Kalender Proker';
     protected static ?string $pluralModelLabel = 'Kalender Proker';
     protected static ?string $navigationGroup = 'Program Kerja';
 
@@ -26,7 +28,6 @@ class KalenderProkerResource extends Resource
             Forms\Components\Section::make('Jadwal Program Kerja')
                 ->description('Tambahkan kegiatan ke kalender program kerja DEMA FEBI')
                 ->schema([
-                    // Select kegiatan — mengambil data dari tabel kegiatans
                     Forms\Components\Select::make('kegiatan_id')
                         ->label('Kegiatan')
                         ->options(Kegiatan::all()->pluck('nama_kegiatan', 'id'))
@@ -34,32 +35,27 @@ class KalenderProkerResource extends Resource
                         ->required()
                         ->helperText('Pilih kegiatan yang ingin ditampilkan di kalender'),
 
-                    // Select divisi — untuk filter dan warna di kalender
                     Forms\Components\Select::make('divisi_id')
-                        ->label('Divisi Penyelenggara')
-                        ->options(Divisi::all()->pluck('nama_divisi', 'id'))
+                        ->label('Dinas Penyelenggara')
+                        ->options(Dinas::all()->pluck('nama_divisi', 'id'))
                         ->searchable()
                         ->nullable()
-                        ->helperText('Opsional — untuk filter kalender per divisi'),
+                        ->helperText('Opsional — untuk filter kalender per dinas'),
 
-                    // Tanggal mulai kegiatan
                     Forms\Components\DatePicker::make('tgl_mulai')
                         ->label('Tanggal Mulai')
                         ->required(),
 
-                    // Tanggal selesai — opsional untuk kegiatan multi hari
                     Forms\Components\DatePicker::make('tgl_selesai')
                         ->label('Tanggal Selesai')
                         ->nullable()
                         ->helperText('Isi jika kegiatan berlangsung lebih dari 1 hari'),
 
-                    // Warna penanda di kalender — pakai kode hex
                     Forms\Components\ColorPicker::make('warna')
                         ->label('Warna Penanda')
                         ->default('#3B82F6')
                         ->helperText('Warna ini akan muncul di tampilan kalender'),
 
-                    // Toggle publik — kalau aktif, mahasiswa umum bisa lihat
                     Forms\Components\Toggle::make('is_publik')
                         ->label('Tampilkan ke Publik')
                         ->default(true)
@@ -78,11 +74,11 @@ class KalenderProkerResource extends Resource
                     ->sortable()
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('divisi.nama_divisi')
-                    ->label('Divisi')
+                Tables\Columns\TextColumn::make('dinas.nama_dinas')
+                    ->label('Dinas')
                     ->badge()
                     ->color('info')
-                    ->placeholder('Semua Divisi'),
+                    ->placeholder('Semua Dinas'),
 
                 Tables\Columns\TextColumn::make('tgl_mulai')
                     ->label('Tanggal Mulai')
@@ -95,7 +91,6 @@ class KalenderProkerResource extends Resource
                     ->placeholder('1 hari')
                     ->sortable(),
 
-                // Tampilkan warna sebagai kotak berwarna
                 Tables\Columns\ColorColumn::make('warna')
                     ->label('Warna'),
 
@@ -104,9 +99,9 @@ class KalenderProkerResource extends Resource
                     ->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('divisi')
-                    ->relationship('divisi', 'nama_divisi')
-                    ->label('Filter Divisi'),
+                Tables\Filters\SelectFilter::make('dinas_id')
+                    ->label('Filter Dinas')
+                    ->options(Dinas::pluck('nama_dinas', 'id')),
 
                 Tables\Filters\TernaryFilter::make('is_publik')
                     ->label('Tampil ke Publik'),

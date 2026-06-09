@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class KasResource extends Resource
 {
+    use \App\Filament\Traits\PimpinanOnly;
     protected static ?string $model = Kas::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Kas Organisasi';

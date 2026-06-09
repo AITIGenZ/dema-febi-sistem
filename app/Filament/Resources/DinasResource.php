@@ -12,9 +12,11 @@ use Filament\Tables\Table;
 
 class DinasResource extends Resource
 {
-    protected static ?string $model = DinasResource::class;
+    use \App\Filament\Traits\PimpinanOnly;
+    protected static ?string $model = Dinas::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
     protected static ?string $navigationLabel = 'Data Dinas';
+    protected static ?string $modelLabel = 'Dinas';
     protected static ?string $pluralModelLabel = 'Dinas';
     protected static ?string $navigationGroup = 'Manajemen Anggota';
 

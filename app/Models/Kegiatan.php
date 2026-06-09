@@ -17,7 +17,7 @@ class Kegiatan extends Model
         'kuota',
         'kategori',
         'is_publik',
-        'divisi_id',
+        'dinas_id',
         'created_by',
     ];
 
@@ -35,9 +35,9 @@ class Kegiatan extends Model
         });
     }
 
-    public function divisi()
+    public function dinas()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Dinas::class);
     }
 
     public function createdBy()

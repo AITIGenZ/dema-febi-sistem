@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 
 class AbsensiResource extends Resource
 {
+    use \App\Filament\Traits\PimpinanOnly;
     protected static ?string $model = Absensi::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
     protected static ?string $navigationLabel = 'Absensi Kegiatan';
@@ -105,9 +106,9 @@ class AbsensiResource extends Resource
                 Tables\Filters\SelectFilter::make('kegiatan')
                     ->relationship('kegiatan', 'nama_kegiatan'),
 
-                Tables\Filters\SelectFilter::make('divisi')
-                    ->relationship('user.divisi', 'nama_divisi')
-                    ->label('Divisi'),
+                Tables\Filters\SelectFilter::make('dinas')
+                    ->relationship('user.dinas', 'nama_dinas')
+                    ->label('Dinas'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

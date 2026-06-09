@@ -13,7 +13,7 @@ class LandingController extends Controller
     public function index()
     {
         // Ambil 6 kegiatan publik terbaru
-        $kegiatan = Kegiatan::with('divisi')
+        $kegiatan = Kegiatan::with('dinas')
             ->where('is_publik', true)
             ->orderBy('tanggal', 'desc')
             ->take(6)
@@ -33,7 +33,7 @@ class LandingController extends Controller
     // Ambil data kalender dalam format JSON untuk FullCalendar
     public function kalender()
     {
-        $events = KalenderProker::with(['kegiatan', 'divisi'])
+        $events = KalenderProker::with(['kegiatan', 'dinas'])
             ->where('is_publik', true)
             ->get()
             ->map(function ($item) {
@@ -44,7 +44,7 @@ class LandingController extends Controller
                         ? $item->tgl_selesai->format('Y-m-d')
                         : null,
                     'color' => $item->warna,
-                    'description' => $item->divisi->nama_divisi ?? 'DEMA FEBI',
+                    'description' => $item->dinas->nama_dinas ?? 'DEMA FEBI',
                 ];
             });
 
@@ -54,7 +54,7 @@ class LandingController extends Controller
     // Halaman detail kegiatan
     public function detailKegiatan($id)
     {
-        $kegiatan = Kegiatan::with('divisi')
+        $kegiatan = Kegiatan::with('dinas')
             ->where('is_publik', true)
             ->findOrFail($id);
 

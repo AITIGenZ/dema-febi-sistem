@@ -2,24 +2,28 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Divisi;
+use App\Models\Dinas;
 use Filament\Widgets\ChartWidget;
 
 class AnggotaChart extends ChartWidget
 {
-    protected static ?string $heading = 'Anggota per Divisi';
-    protected static ?string $description = 'Jumlah anggota aktif di setiap divisi DEMA FEBI';
+    public static function canView(): bool
+    {
+        return auth()->user()->hasRole('pimpinan');
+    }
+    protected static ?string $heading = 'Anggota per Dinas';
+    protected static ?string $description = 'Jumlah anggota aktif di setiap dinas DEMA FEBI';
     protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
     {
-        $divisis = Divisi::withCount([
+        $dinas = Dinas::withCount([
             'users' => fn($query) => $query->where('status', 'aktif')
         ])->get();
 
-        $labels = $divisis->pluck('nama_divisi')->toArray();
-        $data = $divisis->pluck('users_count')->toArray();
+        $labels = $dinas->pluck('nama_dinas')->toArray();
+        $data = $dinas->pluck('users_count')->toArray();
 
         $colors = [
             'rgba(59, 130, 246, 0.8)',

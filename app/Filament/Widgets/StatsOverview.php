@@ -11,6 +11,10 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    public static function canView(): bool
+    {
+        return auth()->user()->hasAnyRole(['pimpinan', 'pengurus']);
+    }
     protected function getStats(): array
     {
         // Hitung total anggota aktif
