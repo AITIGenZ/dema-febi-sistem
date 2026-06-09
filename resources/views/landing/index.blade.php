@@ -513,7 +513,7 @@
         }
         .ketum-png {
             width: 100%;
-            height: auto;
+            height: 300px;
             max-height: 100%;
             object-fit: contain;
             filter: drop-shadow(-6px 10px 10px rgba(0, 0, 0, 0.12));
@@ -1009,12 +1009,11 @@
     <div class="nav-container">
         <!-- LEFT: Logo DEMA FEBI (tanpa background putih) -->
         <a href="{{ url('/') }}" class="nav-brand">
-            <img src="/images/logo.png" alt="DEMA FEBI" class="nav-logo-single" onerror="this.style.display='none'">
+            <img src="/images/logo_kabinet.png" alt="DEMA FEBI" class="nav-logo-single" onerror="this.style.display='none'">
             <div class="nav-brand-text">
                 <div class="nav-brand-name">DEMA FEBI</div>
                 <div class="nav-brand-sub">UIN Mahmud Yunus Batusangkar</div>
             </div>
-        </a>
 
         <!-- CENTER: Navigation Links (Home, Event, News) -->
         <div class="nav-links-center">
@@ -1054,14 +1053,14 @@
     <div class="hero-ornament hero-ornament-tr"></div>
 
     <h1 class="hero-title">
-        DEMA<span class="l2">FEBI</span>
+        DEMA<span class="l1"> FEBI</span>
     </h1>
 
-    <p class="hero-tagline">
+    {{-- <p class="hero-tagline">
         <strong>Dewan Eksekutif Mahasiswa</strong><br>
         Fakultas Ekonomi dan Bisnis Islam<br>
         UIN Mahmud Yunus Batusangkar
-    </p>
+    </p> --}}
 
     <div class="hero-stats">
         <div class="hstat">
@@ -1112,7 +1111,7 @@
                     <div class="speech-front">
                         {{-- FOTO KETUM MELAYANG (Terisolasi aman, tidak mengganggu grid teks) --}}
                         <div class="ketum-cutout-wrap">
-                            <img src="/images/ketum dema.png" alt="Ketua DEMA" class="ketum-png">
+                            <img src="/images/ketum.png" alt="Ketua DEMA" class="ketum-png">
                         </div>
 
                         {{-- Kolom Kosong 1 untuk Mengalah pada Foto --}}
