@@ -7,9 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
+use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -37,21 +39,46 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-    // Hanya user aktif yang bisa akses panel Filament
-    // Pimpinan dan Pengurus bisa akses panel Filament
+    /**
+     * Logika pencarian file foto untuk Avatar Topbar Filament
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        // Jika data kolom photo di database kosong/null, tampilkan inisial (KF)
+        if (! $this->photo) {
+            return null;
+        }
+
+        // 1. Jika path di database berupa URL lengkap (http:// atau https://)
+        if (str_starts_with($this->photo, 'http://') || str_starts_with($this->photo, 'https://')) {
+            return $this->photo;
+        }
+
+        // 2. Jika foto ditaruh langsung di folder public/images/nama_file.png
+        if (file_exists(public_path('images/' . $this->photo))) {
+            return asset('images/' . $this->photo);
+        }
+
+        // 3. Jika menggunakan sistem upload bawaan Laravel Storage (storage/app/public)
+        return Storage::url($this->photo);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->status === 'aktif' &&
-            $this->hasAnyRole(['pimpinan', 'pengurus']);
+            $this->hasAnyRole(['pimpinan', 'pengurus', 'super_admin']);
     }
 
+<<<<<<< HEAD
     // Relasi ke tabel divisi
     public function dinas()
+=======
+    public function divisi()
+>>>>>>> 6b08088 (fitur: memindahkan logo ke topbar, kustomisasi avatar profil, dan penyesuaian halaman admin)
     {
         return $this->belongsTo(Dinas::class, 'dinas_id');
     }
 
-    // Relasi ke Laravel Notifications
     public function notifications()
     {
         return $this->hasMany(
@@ -61,7 +88,6 @@ class User extends Authenticatable implements FilamentUser
             ->orderBy('created_at', 'desc');
     }
 
-    // Relasi ke notifikasi yang belum dibaca
     public function unreadNotifications()
     {
         return $this->notifications()

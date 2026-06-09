@@ -1,133 +1,201 @@
 <x-filament-panels::page.simple>
 
-    {{-- ═══════════════════════════════════════════
-         LOGO TIGA INSTITUSI
-         Pastikan file ada di: public/images/
-    ════════════════════════════════════════════ --}}
-    <x-slot name="logo">
-        <div style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            margin-bottom: 4px;
-        ">
-            {{-- Logo UIN --}}
-            <div style="
-                width: 56px; height: 56px;
-                border-radius: 50%;
-                border: 2px solid rgba(196,160,48,0.5);
-                overflow: hidden;
-                background: #fff;
-                display: flex; align-items: center; justify-content: center;
-                flex-shrink: 0;
-            ">
-                <img src="{{ asset('images/logo_uin.png') }}"
-                     alt="Logo UIN"
-                     style="width: 50px; height: 50px; object-fit: contain;">
-            </div>
+<style>
+    html,
+    body,
+    .fi-body,
+    .fi-layout,
+    .fi-main,
+    .fi-simple-layout,
+    .fi-simple-page,
+    .fi-simple-main {
+        background: #071c56 !important;
+    }
 
-            {{-- Garis pemisah --}}
-            <div style="width: 1px; height: 44px; background: rgba(196,160,48,0.35);"></div>
+    .fi-simple-header,
+    .fi-simple-header-heading,
+    .fi-simple-header-subheading,
+    .fi-logo,
+    .fi-brand {
+        display: none !important;
+    }
 
-            {{-- Logo DEMA FEBI --}}
-            <div style="
-                width: 56px; height: 56px;
-                border-radius: 50%;
-                border: 2px solid rgba(196,160,48,0.5);
-                overflow: hidden;
-                background: #fff;
-                display: flex; align-items: center; justify-content: center;
-                flex-shrink: 0;
-            ">
-                <img src="{{ asset('images/logo_dema.jpeg') }}"
-                     alt="Logo DEMA FEBI"
-                     style="width: 50px; height: 50px; object-fit: contain;">
-            </div>
+    .fi-simple-main {
+        max-width: 100% !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
 
-            {{-- Garis pemisah --}}
-            <div style="width: 1px; height: 44px; background: rgba(196,160,48,0.35);"></div>
+    .dema-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+    }
 
-            {{-- Logo Kabinet Nebula Leviosa --}}
-            <div style="
-                width: 56px; height: 56px;
-                border-radius: 50%;
-                border: 2px solid rgba(196,160,48,0.5);
-                overflow: hidden;
-                background: #fff;
-                display: flex; align-items: center; justify-content: center;
-                flex-shrink: 0;
-            ">
-                <img src="{{ asset('images/kabinet.jpeg') }}"
-                     alt="Logo Kabinet Nebula Leviosa"
-                     style="width: 50px; height: 50px; object-fit: contain;">
-            </div>
-        </div>
-    </x-slot>
+    .dema-card {
+        width: 100%;
+        max-width: 620px;
+        background: #152f73;
+        border-radius: 30px;
+        padding: 40px;
+        border: 1px solid rgba(212,175,55,.25);
+        box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
 
-    {{-- ═══════════════════════════════════════════
-         HEADING: DEMA FEBI
-    ════════════════════════════════════════════ --}}
-    <x-slot name="heading">
-        <div style="text-align: center; line-height: 1.2;">
-            <div style="
-                font-size: 10px;
-                letter-spacing: 0.2em;
-                color: rgba(196,160,48,0.75);
-                text-transform: uppercase;
-                margin-bottom: 4px;
-                font-weight: 400;
-            ">Dewan Eksekutif Mahasiswa</div>
-            <div style="
-                font-family: Georgia, 'Times New Roman', serif;
-                font-size: 24px;
-                font-weight: 700;
-                color: #C4A030;
-                letter-spacing: 0.08em;
-            ">DEMA FEBI</div>
-            <div style="
-                font-size: 10px;
-                color: rgba(255,255,255,0.3);
-                letter-spacing: 0.12em;
-                margin-top: 4px;
-            ">Kabinet Nebula Leviosa · 2026</div>
-        </div>
-    </x-slot>
+    .logo-box {
+        background: #fff;
+        border-radius: 22px;
+        padding: 20px;
+        width: fit-content;
+        margin: 0 auto 30px auto;
+    }
 
-    {{-- ═══════════════════════════════════════════
-         SUBHEADING: Log In
-    ════════════════════════════════════════════ --}}
-    <x-slot name="subheading">
-        <div style="
-            text-align: center;
-            font-size: 11px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
-            padding-top: 4px;
-        ">Log In</div>
-    </x-slot>
+    .logo-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
 
-    {{ \Filament\Facades\Filament::renderHook(\Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_BEFORE) }}
+    .logo-uin {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+    }
 
-    <x-filament-panels::form wire:submit="authenticate">
-        {{ $this->form }}
+    .logo-kabinet {
+        width: 95px;
+        height: 95px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #d4af37;
+        padding: 3px;
+        background: #fff;
+    }
 
-        <x-filament-panels::form.actions
-            :actions="$this->getCachedFormActions()"
-            :full-width="$this->hasFullWidthFormActions()"
-        />
-    </x-filament-panels::form>
+    .logo-dema {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #d4af37;
+        padding: 3px;
+        background: #fff;
+    }
 
-    {{ \Filament\Facades\Filament::renderHook(\Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER) }}
-
-    {{-- Footer --}}
-    <div style="
+    .title-small {
         text-align: center;
-        font-size: 10px;
-        color: rgba(255,255,255,0.2);
-        margin-top: 0.5rem;
-        letter-spacing: 0.06em;
-    ">UIN Mahmud Yunus Batusangkar</div>
+        color: #d4af37;
+        letter-spacing: 5px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .title-main {
+        text-align: center;
+        color: #d4af37;
+        font-size: 58px;
+        font-weight: 700;
+        font-family: Georgia, serif;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #aab6d9;
+        font-size: 18px;
+        margin-top: 12px;
+        margin-bottom: 25px;
+    }
+
+    .divider {
+        border-top: 1px solid rgba(212,175,55,.20);
+        margin: 25px 0;
+    }
+
+    .fi-input,
+    .fi-input-wrp {
+        background: rgba(255,255,255,.06) !important;
+        border: 1px solid rgba(212,175,55,.25) !important;
+        border-radius: 12px !important;
+    }
+
+    .fi-input {
+        color: white !important;
+    }
+
+    .fi-label {
+        color: #d4af37 !important;
+        letter-spacing: 2px;
+        font-weight: 600 !important;
+    }
+
+    button[type="submit"] {
+        width: 100% !important;
+        height: 55px !important;
+        background: #d4af37 !important;
+        color: #071c56 !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        font-size: 15px !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,.15);
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background: #c49e2f !important;
+    }
+
+    button[type="submit"] span {
+        color: #071c56 !important;
+        font-weight: 700 !important;
+    }
+
+    .footer {
+        text-align: center;
+        color: #7f8db6;
+        margin-top: 25px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="dema-wrapper">
+    <div class="dema-card">
+
+        <div class="logo-box">
+            <div class="logo-row">
+                <img src="{{ asset('images/logo uin.png') }}" alt="UIN" class="logo-uin">
+                <img src="{{ asset('images/kabinet.png') }}" alt="Kabinet" class="logo-kabinet">
+                <img src="{{ asset('images/logo.png') }}" alt="DEMA" class="logo-dema">
+            </div>
+        </div>
+
+        <div class="title-small">DEWAN EKSEKUTIF MAHASISWA</div>
+        <div class="title-main">DEMA FEBI</div>
+        <div class="subtitle">Kabinet Nebula Leviosa • 2026</div>
+        <div class="divider"></div>
+
+        <form wire:submit.prevent="authenticate">
+            {{ $this->form }}
+
+            <x-filament::button
+                type="submit"
+                size="lg"
+                class="w-full mt-4"
+            >
+                LOG IN
+            </x-filament::button>
+        </form>
+
+        <div class="footer">UIN Mahmud Yunus Batusangkar</div>
+
+    </div>
+</div>
 
 </x-filament-panels::page.simple>
