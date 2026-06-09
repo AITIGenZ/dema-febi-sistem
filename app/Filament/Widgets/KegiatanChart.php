@@ -4,60 +4,49 @@ namespace App\Filament\Widgets;
 
 use App\Models\Kegiatan;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\DB;
 
 class KegiatanChart extends ChartWidget
 {
-    protected static ?string $heading = 'Kegiatan Sepanjang Tahun';
-    protected static ?string $description = 'Jumlah kegiatan DEMA FEBI per bulan tahun ini';
-    protected static ?int $sort = 3;
-    protected int|string|array $columnSpan = 'full';
+    protected static ?string $heading = 'Statistik Kegiatan';
 
     protected function getData(): array
     {
-        $namaBulan = [
-            1 => 'Jan',
-            2 => 'Feb',
-            3 => 'Mar',
-            4 => 'Apr',
-            5 => 'Mei',
-            6 => 'Jun',
-            7 => 'Jul',
-            8 => 'Agu',
-            9 => 'Sep',
-            10 => 'Okt',
-            11 => 'Nov',
-            12 => 'Des',
-        ];
-        $data = Kegiatan::selectRaw("strftime('%m', tanggal) as bulan, COUNT(*) as total")
-            ->whereYear('tanggal', now()->year)
+        $year = now()->year;
+
+        $data = Kegiatan::query()
+            ->select(
+                DB::raw('MONTH(tanggal) as bulan'), // ✅ FIX DI SINI
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereYear('tanggal', $year)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')
             ->toArray();
-            
 
-        $chartData = [];
+        // Isi semua bulan (1-12)
+        $result = [];
         for ($i = 1; $i <= 12; $i++) {
-            $chartData[] = $data[$i] ?? 0;
+            $result[] = $data[$i] ?? 0;
         }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Jumlah Kegiatan',
-                    'data' => $chartData,
-                    'borderColor' => 'rgba(59, 130, 246, 1)',
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
-                    'fill' => true,
-                    'tension' => 0.4,
+                    'data' => $result,
                 ],
             ],
-            'labels' => array_values($namaBulan),
+            'labels' => [
+                'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+                'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
+            ],
         ];
     }
 
     protected function getType(): string
     {
-        return 'line';
+        return 'bar';
     }
 }

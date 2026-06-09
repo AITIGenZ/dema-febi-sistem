@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Absensi;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -43,23 +44,32 @@ class User extends Authenticatable implements FilamentUser
         return $this->status === 'aktif';
     }
 
-    // Relasi ke tabel divisi
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
     public function divisi()
     {
         return $this->belongsTo(Divisi::class);
     }
 
-    // Relasi ke Laravel Notifications
+    public function absensis()
+    {
+        return $this->hasMany(Absensi::class);
+    }
+
     public function notifications()
     {
         return $this->hasMany(
             'Illuminate\Notifications\DatabaseNotification',
             'notifiable_id'
-        )->where('notifiable_type', self::class)
-         ->orderBy('created_at', 'desc');
+        )
+        ->where('notifiable_type', self::class)
+        ->orderBy('created_at', 'desc');
     }
 
-    // Relasi ke notifikasi yang belum dibaca
     public function unreadNotifications()
     {
         return $this->notifications()

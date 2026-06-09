@@ -54,7 +54,7 @@ Route::middleware(['auth'])->prefix('api/notifications')->name('api.notification
     Route::delete('/', [NotificationController::class, 'deleteAll'])->name('delete-all');
 });
 Route::get('/test-wa', function () {
-    $response = WhatsAppService::send('6285187138174
+    $response = WhatsAppService::send('62851
     ', 'Test WA dari Laravel! ✅');
     
     return $response->json();
