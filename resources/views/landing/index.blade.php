@@ -282,9 +282,8 @@
     height: 48px;
     object-fit: contain;
     background: transparent;
-    /* Ini kunci utamanya - menghilangkan background putih */
-    mix-blend-mode: multiply;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
 }
 /* Untuk navbar dengan background gelap, pakai screen */
 .navbar .nav-logo-single {
@@ -347,25 +346,27 @@
         .hero-ornament-bl { bottom: -20px; left: -20px; width: 480px; height: 480px; opacity: .7; }
         .hero-ornament-tr { top: -20px; right: -20px; width: 380px; height: 380px; opacity: .4; transform: rotate(180deg); }
 
-        .hero-title {
-            font-size: clamp(80px, 15vw, 170px);
-            font-weight: 900;
-            line-height: .88;
-            text-align: center;
-            letter-spacing: -5px;
-            position: relative; z-index: 2;
-            background: linear-gradient(135deg,
-                rgba(255,255,255,0.10) 0%,
-                rgba(160,235,235,0.65) 22%,
-                rgba(255,255,255,0.97) 50%,
-                rgba(160,235,235,0.65) 78%,
-                rgba(255,255,255,0.10) 100%);
-            background-size: 400% 100%;
-            -webkit-background-clip: text; background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 9s ease-in-out infinite;
-            user-select: none;
-        }
+.hero-title {
+    font-size: clamp(60px, 10vw, 120px);
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+    letter-spacing: -3px;
+    position: relative; z-index: 2;
+    margin-top: 80px;
+    white-space: nowrap;
+    background: linear-gradient(135deg,
+        rgba(255,255,255,0.10) 0%,
+        rgba(160,235,235,0.65) 22%,
+        rgba(255,255,255,0.97) 50%,
+        rgba(160,235,235,0.65) 78%,
+        rgba(255,255,255,0.10) 100%);
+    background-size: 400% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 9s ease-in-out infinite;
+    user-select: none;
+}
         .hero-title .l2 {
             display: block;
             background: linear-gradient(135deg,
@@ -1007,28 +1008,33 @@
 {{-- ===== NAVBAR PREMIUM (FIXED) ===== --}}
 <nav class="navbar" id="mainNav">
     <div class="nav-container">
-        <!-- LEFT: Logo DEMA FEBI (tanpa background putih) -->
+
+        <!-- LEFT: Logo DEMA FEBI -->
         <a href="{{ url('/') }}" class="nav-brand">
-            <img src="/images/logo_kabinet.png" alt="DEMA FEBI" class="nav-logo-single" onerror="this.style.display='none'">
+            <img src="/images/logo_kabinet.png" alt="DEMA FEBI"
+                class="nav-logo-single" onerror="this.style.display='none'">
             <div class="nav-brand-text">
                 <div class="nav-brand-name">DEMA FEBI</div>
                 <div class="nav-brand-sub">UIN Mahmud Yunus Batusangkar</div>
             </div>
+        </a>
 
-        <!-- CENTER: Navigation Links (Home, Event, News) -->
+        <!-- CENTER: Navigation Links -->
         <div class="nav-links-center">
-            <a href="#home" class="nav-link">Home</a>
-            <a href="#events" class="nav-link">Event</a>
-            <a href="#news" class="nav-link">News</a>
+            <a href="#home"     class="nav-link">Home</a>
+            <a href="#kegiatan" class="nav-link">Event</a>
+            <a href="#berita"   class="nav-link">News</a>
+            <a href="#kalender" class="nav-link">Kalender</a>
         </div>
 
         <!-- RIGHT: Login Admin Button -->
         <div class="nav-right">
             <a href="{{ url('/admin') }}" class="nav-cta">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
                     <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/>
                 </svg>
-                Login Admin
+                <span>Login Admin</span>
             </a>
         </div>
 
@@ -1036,31 +1042,31 @@
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <span></span><span></span><span></span>
         </button>
+
     </div>
 
     <!-- Mobile Menu Dropdown -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#home" class="mobile-link">Home</a>
-        <a href="#events" class="mobile-link">Event</a>
-        <a href="#news" class="mobile-link">News</a>
+        <a href="#home"     class="mobile-link">Home</a>
+        <a href="#kegiatan" class="mobile-link">Event</a>
+        <a href="#berita"   class="mobile-link">News</a>
+        <a href="#kalender" class="mobile-link">Kalender</a>
         <a href="{{ url('/admin') }}" class="mobile-cta">Login Admin</a>
     </div>
 </nav>
 
 {{-- ===== HERO ===== --}}
-<section class="hero">
+<section class="hero" id="home">
     <div class="hero-ornament hero-ornament-bl"></div>
     <div class="hero-ornament hero-ornament-tr"></div>
 
-    <h1 class="hero-title">
-        DEMA<span class="l1"> FEBI</span>
-    </h1>
+    <h1 class="hero-title">DEMA FEBI 2026</h1>
 
-    {{-- <p class="hero-tagline">
+    <p class="hero-tagline">
         <strong>Dewan Eksekutif Mahasiswa</strong><br>
         Fakultas Ekonomi dan Bisnis Islam<br>
         UIN Mahmud Yunus Batusangkar
-    </p> --}}
+    </p>
 
     <div class="hero-stats">
         <div class="hstat">
@@ -1083,7 +1089,10 @@
     </div>
 
     <div class="hero-scroll">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
         Scroll
     </div>
 </section>
@@ -1119,11 +1128,11 @@
 
                         {{-- Kolom 2: Konten Teks Kartu Depan --}}
                         <div class="speech-text-content">
-                            <p class="speech-quote-text">"Bersama membangun FEBI yang Berkarakter dan Berprestasi."</p>
+                            <p class="speech-quote-text">"Bersama membangun FEBI yang Berdampak dan Berprestasi."</p>
                             <p class="speech-body-text">Assalamu'alaikum Wr. Wb. Selamat datang di SIMA DEMA FEBI — Semoga Platform ini menjadi Jembatan Komunikasi yang efektif antara Pengurus dan seluruh Civitas FEBI.</p>
                             <hr class="speech-hr">
-                            <div class="speech-name">Polis Umum DEMA FEBI</div>
-                            <div class="speech-role">Periode 2025/2026</div>
+                            <div class="speech-name">Gubernur DEMA FEBI</div>
+                            <div class="speech-role">Periode 2026</div>
                         </div>
                     </div>
                     
@@ -1199,7 +1208,7 @@
 </section>
 
 {{-- ===== BERITA ===== --}}
-<section class="berita-sec">
+<section id="berita" class="berita-sec">
     <div class="inner">
         <div class="sec-header">
             <div>
