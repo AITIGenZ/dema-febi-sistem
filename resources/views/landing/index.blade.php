@@ -1060,7 +1060,7 @@
     <div class="hero-ornament hero-ornament-bl"></div>
     <div class="hero-ornament hero-ornament-tr"></div>
 
-    <h1 class="hero-title">DEMA FEBI 2026</h1>
+    <h1 class="hero-title">SIMA DEMA FEBI</h1>
 
     <p class="hero-tagline">
         <strong>Dewan Eksekutif Mahasiswa</strong><br>
