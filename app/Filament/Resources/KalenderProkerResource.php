@@ -30,14 +30,22 @@ class KalenderProkerResource extends Resource
                 ->schema([
                     Forms\Components\Select::make('kegiatan_id')
                         ->label('Kegiatan')
-                        ->options(Kegiatan::all()->pluck('nama_kegiatan', 'id'))
+                        ->options(
+                            \App\Models\Kegiatan::all()
+                                ->filter(fn($k) => !is_null($k->nama_kegiatan))
+                                ->pluck('nama_kegiatan', 'id')
+                        )
                         ->searchable()
                         ->required()
                         ->helperText('Pilih kegiatan yang ingin ditampilkan di kalender'),
 
                     Forms\Components\Select::make('divisi_id')
                         ->label('Dinas Penyelenggara')
-                        ->options(Dinas::all()->pluck('nama_divisi', 'id'))
+                        ->options(
+                            \App\Models\Dinas::all()
+                                ->filter(fn($d) => !is_null($d->nama_dinas))
+                                ->pluck('nama_dinas', 'id')
+                        )
                         ->searchable()
                         ->nullable()
                         ->helperText('Opsional — untuk filter kalender per dinas'),

@@ -1380,17 +1380,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 1. Logika Flip Card
-        const card = document.getElementById('speechCard');
-        if (card) {
-            card.addEventListener('click', function() {
-                this.classList.toggle('flipped');
-            });
-        }
+document.addEventListener('DOMContentLoaded', function() {
 
-        // 2. Efek Navbar
-        const mainNav = document.getElementById('mainNav');
+    // 1. Logika Flip Card
+    const card = document.getElementById('speechCard');
+    if (card) {
+        card.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+    }
+
+    // 2. Efek Navbar
+    const mainNav = document.getElementById('mainNav');
+    if (mainNav) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 40) {
                 mainNav.classList.add('scrolled');
@@ -1398,63 +1400,67 @@
                 mainNav.classList.remove('scrolled');
             }
         });
+    }
 
-        // 3. Inisialisasi Kalender (Cek ID 'calendar' atau 'kalender-container')
-        // SESUAIKAN: Jika di HTML kamu pakai <div id="calendar">, ganti teks di bawah jadi 'calendar'
-        const calendarEl = document.getElementById('kalender-container') || document.getElementById('calendar');
-        
-        if (calendarEl) {
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'id',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth'
-                },
-                // Load data event secara aman
-                events: [
-                    @if(isset($kegiatan) && count($kegiatan) > 0)
-                        @foreach($kegiatan as $item)
-                        {
-                            title: "{{ $item->nama_kegiatan }}",
-                            // Memastikan format tanggal aman yyyy-mm-dd
-                            start: "{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}",
-                            color: '#1a7a7a'
-                        },
-                        @endforeach
-                    @endif
-                ]
-            });
-            calendar.render();
-            console.log("Kalender berhasil di-render!");
-        } else {
-            console.error("Error: Element container kalender tidak ditemukan di HTML!");
-        }
-    });
-    // Smooth scroll untuk anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const target = document.querySelector(targetId);
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
-            
-            // Tutup mobile menu jika terbuka
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileBtn = document.getElementById('mobileMenuBtn');
-            if (mobileMenu && mobileMenu.classList.contains('open')) {
-                mobileMenu.classList.remove('open');
-                mobileBtn?.classList.remove('active');
+    // 3. Inisialisasi Kalender
+    const calendarEl = document.getElementById('kalender-container') || document.getElementById('calendar');
+
+    if (calendarEl) {
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'id',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,listWeek'
+            },
+            buttonText: {
+                today: 'Hari Ini',
+                month: 'Bulan',
+                list: 'Agenda'
+            },
+            events: '/kalender-data',
+            eventClick: function(info) {
+                alert(
+                    '📅 ' + info.event.title + '\n' +
+                    'Penyelenggara: ' + (info.event.extendedProps.description || 'DEMA FEBI')
+                );
+            },
+            height: 'auto',
+            eventDisplay: 'block',
+            dayMaxEvents: 3,
+        });
+        calendar.render();
+        console.log("Kalender berhasil di-render!");
+    } else {
+        console.error("Element kalender tidak ditemukan!");
+    }
+
+    // 4. Smooth scroll untuk anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Tutup mobile menu jika terbuka
+                const mobileMenu = document.getElementById('mobileMenu');
+                const mobileBtn = document.getElementById('mobileMenuBtn');
+                if (mobileMenu && mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    mobileBtn?.classList.remove('active');
+                }
             }
-        }
+        });
     });
+
 });
 </script>
 

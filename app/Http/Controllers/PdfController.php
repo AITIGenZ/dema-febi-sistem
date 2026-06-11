@@ -12,10 +12,10 @@ class PdfController extends Controller
     public function absensi($kegiatanId)
     {
         // Ambil data kegiatan beserta relasi divisi
-        $kegiatan = Kegiatan::with('divisi')->findOrFail($kegiatanId);
+        $kegiatan = Kegiatan::with('dinas')->findOrFail($kegiatanId);
 
         // Ambil semua absensi kegiatan ini beserta data user dan divisinya
-        $absensis = Absensi::with(['user.divisi'])
+        $absensis = Absensi::with(['user.dinas'])
             ->where('kegiatan_id', $kegiatanId)
             ->get();
 

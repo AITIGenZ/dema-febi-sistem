@@ -44,7 +44,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->status === 'aktif' &&
             $this->hasAnyRole(['pimpinan', 'pengurus']);
     }
-
     // Relasi ke tabel divisi
     public function dinas()
     {
