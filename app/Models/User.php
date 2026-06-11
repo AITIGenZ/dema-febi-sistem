@@ -69,6 +69,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             $this->hasAnyRole(['pimpinan', 'pengurus', 'super_admin']);
     }
 
+    // Relasi ke tabel divisi
     public function dinas()
     {
         return $this->belongsTo(Dinas::class, 'dinas_id');
