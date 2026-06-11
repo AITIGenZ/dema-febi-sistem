@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,6 +42,14 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\AnggotaChart::class,
                 \App\Filament\Widgets\KegiatanChart::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Kehadiran'),
+                NavigationGroup::make('Manajemen Rapat'),
+                NavigationGroup::make('Manajemen Kegiatan'),
+                NavigationGroup::make('Manajemen Anggota'),
+                NavigationGroup::make('Program Kerja'),
+                NavigationGroup::make('Keuangan'),
             ])
             ->middleware([
                 EncryptCookies::class,

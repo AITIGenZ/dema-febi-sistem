@@ -16,27 +16,26 @@
         @endif
 
         {{-- LIST ABSENSI --}}
-        @foreach ($this->absensis as $absen)
+        @forelse ($this->absensis as $absen)
 
-            <div class="p-4 bg-white rounded-lg shadow">
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
 
-                <h3 class="font-bold text-lg">
-                    {{ $absen->jenis === 'rapat'
-                        ? $absen->rapat?->judul
-                        : $absen->kegiatan?->nama_kegiatan }}
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white">
+                    {{ $absen->rapat_id
+                        ? ($absen->rapat?->judul ?? 'Rapat')
+                        : ($absen->kegiatan?->nama_kegiatan ?? 'Kegiatan') }}
                 </h3>
 
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
                     {{ $absen->tgl_absen?->format('d M Y H:i') }}
                 </p>
 
-                <p class="mt-2">
+                <p class="mt-2 text-gray-900 dark:text-white">
                     Status:
                     <strong>{{ strtoupper($absen->status) }}</strong>
                 </p>
 
-                {{-- Tombol hanya muncul kalau belum hadir --}}
-                @if ($absen->status !== 'hadir' && $absen->jenis === 'rapat')
+                @if ($absen->status !== 'hadir' && $absen->rapat_id)
 
                     <button
                         onclick="ambilLokasi({{ $absen->id }})"
@@ -49,11 +48,16 @@
 
             </div>
 
-        @endforeach
+        @empty
+
+            <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow text-gray-500 dark:text-gray-400">
+                Belum ada data absensi.
+            </div>
+
+        @endforelse
 
     </div>
 
-    {{-- SCRIPT GPS --}}
     <script>
         function ambilLokasi(absensiId) {
             if (!navigator.geolocation) {
@@ -69,7 +73,7 @@
                     @this.call('absen', absensiId, lat, lon);
                 },
                 function(error) {
-                    alert("Gagal mengambil lokasi");
+                    alert("Gagal mengambil lokasi: " + error.message);
                 }
             );
         }

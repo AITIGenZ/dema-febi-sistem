@@ -86,7 +86,8 @@ class Kegiatan extends Model
         return $this->hasMany(Dokumen::class);
     }
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
 }

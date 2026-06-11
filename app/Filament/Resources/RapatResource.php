@@ -18,13 +18,10 @@ class RapatResource extends Resource
     protected static ?string $model = Rapat::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
     protected static ?string $navigationLabel = 'Rapat';
-
-    protected static ?string $navigationGroup = 'Manajemen Kegiatan';
-
+    protected static ?string $navigationGroup = 'Manajemen Rapat';
     protected static ?string $modelLabel = 'Rapat';
-
+    
     protected static ?string $pluralModelLabel = 'Rapat';
 
     public static function form(Form $form): Form
@@ -55,13 +52,43 @@ class RapatResource extends Resource
 
                 Forms\Components\Select::make('divisi_id')
                     ->label('Divisi')
-                    ->options(
-                        Divisi::pluck('nama_divisi', 'id')
-                    )
+                    ->options(Divisi::pluck('nama_divisi', 'id'))
                     ->searchable()
-                    ->visible(fn ($get) =>
-                        $get('tipe') === 'divisi'
-                    ),
+                    ->visible(fn ($get) => $get('tipe') === 'divisi'),
+
+                Forms\Components\Section::make('Lokasi Absen (untuk GPS)')
+                    ->description('Klik di peta untuk pilih lokasi check-in')
+                    ->schema([
+
+                        \App\Forms\Components\MapPicker::make('map_picker')
+                            ->label('Pilih Lokasi')
+                            ->latitudeField('latitude')
+                            ->longitudeField('longitude')
+                            ->radiusField('radius')
+                            ->columnSpanFull(),
+
+                        Forms\Components\TextInput::make('latitude')
+                            ->numeric()
+                            ->required()
+                            ->live()
+                            ->placeholder('-6.200000'),
+
+                        Forms\Components\TextInput::make('longitude')
+                            ->numeric()
+                            ->required()
+                            ->live()
+                            ->placeholder('106.816666'),
+
+                        Forms\Components\TextInput::make('radius')
+                            ->numeric()
+                            ->required()
+                            ->live()
+                            ->suffix('meter')
+                            ->default(100)
+                            ->helperText('Radius toleransi lokasi check-in'),
+
+                    ])
+                    ->columns(3),
 
             ]);
     }
@@ -109,22 +136,16 @@ class RapatResource extends Resource
                     ->placeholder('-'),
 
             ])
-
             ->filters([
                 //
             ])
-
             ->actions([
 
                 Tables\Actions\Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-
-                    ->visible(fn ($record) =>
-                        $record->status_pengajuan === 'pending'
-                    )
-
+                    ->visible(fn ($record) => $record->status_pengajuan === 'pending')
                     ->action(function ($record) {
 
                         $record->update([
@@ -134,20 +155,12 @@ class RapatResource extends Resource
                         ]);
 
                         if ($record->tipe === 'global') {
-
                             $users = User::all();
-
                         } else {
-
-                            $users = User::where(
-                                'divisi_id',
-                                $record->divisi_id
-                            )->get();
-
+                            $users = User::where('divisi_id', $record->divisi_id)->get();
                         }
 
                         foreach ($users as $user) {
-
                             Absensi::firstOrCreate(
                                 [
                                     'user_id' => $user->id,
@@ -158,7 +171,6 @@ class RapatResource extends Resource
                                     'tgl_absen' => now(),
                                 ]
                             );
-
                         }
 
                     }),
@@ -167,35 +179,20 @@ class RapatResource extends Resource
                     ->label('Tolak')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-
-                    ->visible(fn ($record) =>
-                        $record->status_pengajuan === 'pending'
-                    )
-
+                    ->visible(fn ($record) => $record->status_pengajuan === 'pending')
                     ->action(function ($record) {
-
-                        $record->update([
-                            'status_pengajuan' => 'ditolak',
-                        ]);
-
+                        $record->update(['status_pengajuan' => 'ditolak']);
                     }),
 
                 Tables\Actions\ViewAction::make(),
-
                 Tables\Actions\EditAction::make(),
-
                 Tables\Actions\DeleteAction::make(),
 
             ])
-
             ->bulkActions([
-
                 Tables\Actions\BulkActionGroup::make([
-
                     Tables\Actions\DeleteBulkAction::make(),
-
                 ]),
-
             ]);
     }
 

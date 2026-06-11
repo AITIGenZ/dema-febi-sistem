@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Kas extends Model
@@ -14,7 +15,6 @@ class Kas extends Model
 
     protected $fillable = [
         'jenis',
-        'sumber',
         'nominal',
         'keterangan',
         'tanggal',
@@ -38,10 +38,5 @@ class Kas extends Model
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function pembayaranKas()
-    {
-        return $this->hasOne(PembayaranKas::class);
     }
 }
