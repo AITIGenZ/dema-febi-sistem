@@ -1,0 +1,220 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* ── BODY ── */
+.fi-body, body {
+    background: #eef2ff !important;
+}
+
+.fi-main, .fi-main-ctn {
+    background: #eef2ff !important;
+    min-height: 100vh !important;
+}
+
+/* ── SIDEBAR ── */
+.fi-sidebar {
+    background: #e0e7ff !important;
+    border-right: 1px solid #c7d2fe !important;
+    box-shadow: 2px 0 12px rgba(79,70,229,0.08) !important;
+}
+
+.fi-sidebar-group-label {
+    color: #6366f1 !important;
+    font-size: 10px !important;
+    letter-spacing: 2.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+}
+
+.fi-sidebar-item-button {
+    border-radius: 10px !important;
+    margin-bottom: 2px !important;
+    transition: all 0.2s !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background: rgba(99,102,241,0.1) !important;
+}
+
+.fi-sidebar-item-button.fi-active {
+    background: #4f46e5 !important;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.35) !important;
+}
+
+.fi-sidebar-item-label {
+    color: #4338ca !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-label {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.fi-sidebar-item-button:hover .fi-sidebar-item-label {
+    color: #4f46e5 !important;
+}
+
+.fi-sidebar-item-icon {
+    color: #6366f1 !important;
+}
+
+.fi-sidebar-item-button.fi-active .fi-sidebar-item-icon {
+    color: white !important;
+}
+
+/* ── TOPBAR ── */
+.fi-topbar {
+    background: #4f46e5 !important;
+    border-bottom: none !important;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.25) !important;
+}
+
+.fi-brand-name {
+    color: white !important;
+    font-weight: 800 !important;
+    font-size: 18px !important;
+    letter-spacing: 0.5px !important;
+}
+
+.fi-topbar-item,
+.fi-topbar button,
+.fi-topbar svg {
+    color: rgba(255,255,255,0.85) !important;
+}
+
+/* ── PAGE HEADER ── */
+.fi-page-header-heading {
+    color: #312e81 !important;
+    font-weight: 800 !important;
+    font-size: 28px !important;
+}
+
+/* ── STAT CARDS ── */
+.fi-wi-stats-overview-stat {
+    background: white !important;
+    border-radius: 16px !important;
+    border: 1px solid #e0e7ff !important;
+    border-top: 4px solid #6366f1 !important;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.1) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 24px rgba(79,70,229,0.18) !important;
+}
+
+.fi-wi-stats-overview-stat-label {
+    color: #6366f1 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: #312e81 !important;
+    font-size: 44px !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+}
+
+.fi-wi-stats-overview-stat-description {
+    color: #818cf8 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* ── WIDGET CARDS ── */
+.fi-wi-chart,
+.fi-widget,
+.fi-section {
+    background: white !important;
+    border-radius: 16px !important;
+    border: 1px solid #e0e7ff !important;
+    box-shadow: 0 4px 16px rgba(79,70,229,0.08) !important;
+}
+
+.fi-section-header-heading {
+    color: #312e81 !important;
+    font-weight: 700 !important;
+}
+
+.fi-section-header-description {
+    color: #818cf8 !important;
+}
+
+/* ── ACCOUNT WIDGET ── */
+.fi-wi-account {
+    background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(79,70,229,0.3) !important;
+}
+
+.fi-wi-account .fi-avatar {
+    border: 2px solid rgba(255,255,255,0.5) !important;
+}
+
+/* ── BUTTONS ── */
+.fi-btn-color-primary {
+    background: #4f46e5 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.3) !important;
+    transition: all 0.2s !important;
+}
+
+.fi-btn-color-primary:hover {
+    background: #4338ca !important;
+    box-shadow: 0 6px 16px rgba(79,70,229,0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── TABLES ── */
+.fi-ta-header-cell {
+    background: #eef2ff !important;
+    color: #4338ca !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    border-bottom: 2px solid #c7d2fe !important;
+}
+
+.fi-ta-row:hover td {
+    background: #eef2ff !important;
+}
+
+/* ── INPUTS ── */
+.fi-input {
+    border: 1px solid #c7d2fe !important;
+    border-radius: 10px !important;
+}
+
+.fi-input:focus {
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15) !important;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #eef2ff; }
+::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
+}

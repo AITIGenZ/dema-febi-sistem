@@ -53,5 +53,10 @@ Route::middleware(['auth'])->prefix('api/notifications')->name('api.notification
     Route::delete('/', [NotificationController::class, 'deleteAll'])->name('delete-all');
 });
 
+// Admin Dashboard & Panel
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    // tambahkan route admin lainnya di sini nanti
+});
 // Route bawaan Laravel Breeze
 require __DIR__ . '/auth.php';
