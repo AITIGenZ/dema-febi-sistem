@@ -27,27 +27,26 @@ class KasService
         return DB::transaction(function () use ($user, $kasSetting, $bulan, $tahun) {
 
             $kas = Kas::create([
-                'jenis'      => 'masuk',
-                'sumber'     => $kasSetting->tipe === 'bulanan' ? 'kas_bulanan' : 'iuran',
-                'nominal'    => $kasSetting->nominal,
-                'keterangan' => $kasSetting->tipe === 'bulanan'
-                    ? "Kas bulanan {$user->name} - " . $this->namaBulan($bulan) . " {$tahun}"
-                    : "Iuran {$kasSetting->nama} - {$user->name}",
-                'tanggal'    => now(),
-                'created_by' => Auth::id(),
-            ]);
+            'jenis'      => 'masuk',
+            'nominal'    => $kasSetting->nominal,
+            'keterangan' => $kasSetting->tipe === 'bulanan'
+                ? "Kas bulanan {$user->name} - " . $this->namaBulan($bulan) . " {$tahun}"
+                : "Iuran {$kasSetting->nama} - {$user->name}",
+            'tanggal'    => now(),
+            'created_by' => Auth::id(),
+        ]);
 
             $pembayaran = PembayaranKas::create([
-                'user_id'        => $user->id,
-                'kas_setting_id' => $kasSetting->id,
-                'kas_id'         => $kas->id,
-                'bulan'          => $bulan,
-                'tahun'          => $tahun,
-                'nominal_bayar'  => $kasSetting->nominal,
-                'status'         => 'lunas',
-                'tanggal_bayar'  => now(),
-                'created_by'     => Auth::id(),
-            ]);
+            'user_id'        => $user->id,
+            'kas_setting_id' => $kasSetting->id,
+            'kas_id'         => $kas->id,
+            'bulan'          => $bulan,
+            'tahun'          => $tahun,
+            'nominal'        => $kasSetting->nominal,
+            'status'         => 'lunas',
+            'tgl_bayar'      => now(),
+            'created_by'     => Auth::id(),
+        ]);
 
             return $pembayaran;
         });

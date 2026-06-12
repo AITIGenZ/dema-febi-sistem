@@ -18,12 +18,12 @@ class PembayaranKas extends Model
         'kas_id',
         'bulan',
         'tahun',
-        'nominal_bayar',
+        'nominal',
         'status',
-        'tanggal_bayar',
-        'keterangan',
+        'tgl_bayar',
         'created_by',
     ];
+    
 
     protected $casts = [
         'nominal_bayar' => 'decimal:2',

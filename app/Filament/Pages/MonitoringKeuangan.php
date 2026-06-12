@@ -56,9 +56,8 @@ class MonitoringKeuangan extends Page
 
     public function getCardsProperty(): array
     {
-        $kasBulanan = Kas::where('jenis', 'masuk')
-            ->where('sumber', 'kas_bulanan')
-            ->whereYear('tanggal', $this->tahun)
+        $kasBulanan = PembayaranKas::where('status', 'lunas')
+            ->where('tahun', $this->tahun)
             ->sum('nominal');
 
         $semuaKas = Kas::where('jenis', 'masuk')
@@ -68,6 +67,7 @@ class MonitoringKeuangan extends Page
         $totalAnggota = User::role(['pengurus', 'bendahara', 'sekretaris', 'ketua'])->count();
 
         $sudahBayar = 0;
+
         if ($this->kasSettingId) {
             $sudahBayar = PembayaranKas::where('kas_setting_id', $this->kasSettingId)
                 ->where('bulan', now()->month)
@@ -84,7 +84,6 @@ class MonitoringKeuangan extends Page
             'belum_bayar'   => $totalAnggota - $sudahBayar,
         ];
     }
-
     public function getDataMonitoringProperty()
     {
         if (!$this->kasSettingId) return collect();
