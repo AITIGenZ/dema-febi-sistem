@@ -44,7 +44,7 @@
                 <a href="#kegiatan" class="text-slate-500 hover:text-blue-700 text-sm font-medium transition">Kegiatan</a>
                 <a href="#kalender" class="text-slate-500 hover:text-blue-700 text-sm font-medium transition">Kalender</a>
                 <a href="{{ url('/admin') }}"
-                   class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-800 transition shadow-sm shadow-blue-200">
+                class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-800 transition shadow-sm shadow-blue-200">
                     Login Admin
                 </a>
             </div>
@@ -54,11 +54,11 @@
     {{-- HERO SECTION --}}
     <section class="hero-gradient text-white py-20 px-4 relative overflow-hidden">
         <img src="/images/Pengurus DEMA.jpeg" alt=""
-             class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none select-none">
+            class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity pointer-events-none select-none">
         <img src="/images/pengurus/ketua.png" alt=""
-             class="absolute bottom-0 left-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+            class="absolute bottom-0 left-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
         <img src="/images/pengurus/wakil.png" alt=""
-             class="absolute bottom-0 right-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
+            class="absolute bottom-0 right-4 h-full max-h-72 object-cover object-top opacity-20 mix-blend-luminosity pointer-events-none select-none hidden md:block">
 
         <div class="max-w-4xl mx-auto text-center relative z-10">
             <span class="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-200 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 tracking-wide uppercase">
