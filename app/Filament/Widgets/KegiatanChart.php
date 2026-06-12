@@ -50,8 +50,8 @@ class KegiatanChart extends ChartWidget
                 [
                     'label' => 'Jumlah Kegiatan',
                     'data' => $chartData,
-                    'borderColor' => 'rgba(59, 130, 246, 1)',
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
+                    'borderColor' => 'rgba(26, 122, 122, 1)',
+                    'backgroundColor' => 'rgba(26, 122, 122, 0.1)',
                     'fill' => true,
                     'tension' => 0.4,
                 ],

@@ -26,12 +26,12 @@ class AnggotaChart extends ChartWidget
         $data = $dinas->pluck('users_count')->toArray();
 
         $colors = [
-            'rgba(59, 130, 246, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)',
-            'rgba(139, 92, 246, 0.8)',
-            'rgba(236, 72, 153, 0.8)',
+         'rgba(26, 122, 122, 0.8)',
+         'rgba(42, 191, 191, 0.8)',
+         'rgba(15, 88, 88, 0.8)',
+         'rgba(26, 160, 160, 0.8)',
+         'rgba(100, 210, 210, 0.8)',
+         'rgba(10, 60, 60, 0.8)',
         ];
 
         return [

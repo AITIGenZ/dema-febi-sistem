@@ -1,0 +1,65 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* ===== TEMA TEAL — SIMA DEMA FEBI ===== */
+
+/* Background utama */
+.fi-main {
+    background-color: #f0f7f7 !important;
+}
+
+/* Sidebar */
+.fi-sidebar {
+    background: linear-gradient(160deg, #083838 0%, #1a7a7a 60%, #0d5050 100%) !important;
+}
+
+/* Sidebar nav item teks */
+.fi-sidebar-nav-item a {
+    color: rgba(255,255,255,0.75) !important;
+}
+
+.fi-sidebar-nav-item a:hover {
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+}
+
+/* Sidebar nav item aktif */
+.fi-sidebar-nav-item a.fi-active {
+    background: rgba(42,191,191,0.2) !important;
+    color: white !important;
+}
+
+/* Sidebar group label */
+.fi-sidebar-group-label {
+    color: rgba(255,255,255,0.4) !important;
+}
+
+/* Topbar */
+.fi-topbar {
+    background: white !important;
+    border-bottom: 1px solid rgba(26,122,122,0.15) !important;
+}
+
+/* Header halaman */
+.fi-header-heading {
+    color: #083838 !important;
+    font-weight: 800 !important;
+}
+
+/* Card/widget */
+.fi-wi-stats-overview-stat {
+    border-top: 3px solid #1a7a7a !important;
+}
+/* Background konten utama */
+.fi-main-ctn {
+    background-color: #f0f7f7 !important;
+}
+
+/* Widget card */
+.fi-wi-stats-overview-stat,
+.fi-section,
+.fi-card {
+    background: white !important;
+    border: 1px solid rgba(26,122,122,0.12) !important;
+}
