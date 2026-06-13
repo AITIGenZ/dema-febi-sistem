@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Filament\Pages;
-
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile as BaseEditProfile;
+use Illuminate\Support\Facades\Hash;
 
 class EditProfile extends BaseEditProfile
 {
@@ -18,20 +17,19 @@ class EditProfile extends BaseEditProfile
                 ->avatar()
                 ->directory('avatars')
                 ->visibility('public'),
-
             TextInput::make('name')
                 ->label('Nama')
                 ->required(),
-
             TextInput::make('email')
                 ->label('Email')
                 ->email()
                 ->required(),
-
             TextInput::make('password')
                 ->label('Password Baru')
                 ->password()
-                ->nullable(),
+                ->nullable()
+                ->dehydrated(fn ($state) => filled($state))
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
         ]);
     }
 }

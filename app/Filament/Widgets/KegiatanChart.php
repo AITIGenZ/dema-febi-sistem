@@ -11,6 +11,7 @@ class KegiatanChart extends ChartWidget
     {
         return auth()->user()->hasRole('pimpinan');
     }
+
     protected static ?string $heading = 'Kegiatan Sepanjang Tahun';
     protected static ?string $description = 'Jumlah kegiatan DEMA FEBI per bulan tahun ini';
     protected static ?int $sort = 3;
@@ -19,18 +20,8 @@ class KegiatanChart extends ChartWidget
     protected function getData(): array
     {
         $namaBulan = [
-            1 => 'Jan',
-            2 => 'Feb',
-            3 => 'Mar',
-            4 => 'Apr',
-            5 => 'Mei',
-            6 => 'Jun',
-            7 => 'Jul',
-            8 => 'Agu',
-            9 => 'Sep',
-            10 => 'Okt',
-            11 => 'Nov',
-            12 => 'Des',
+            1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'Mei',6=>'Jun',
+            7=>'Jul',8=>'Agu',9=>'Sep',10=>'Okt',11=>'Nov',12=>'Des',
         ];
 
         $data = Kegiatan::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
@@ -50,8 +41,12 @@ class KegiatanChart extends ChartWidget
                 [
                     'label' => 'Jumlah Kegiatan',
                     'data' => $chartData,
-                    'borderColor' => 'rgba(26, 122, 122, 1)',
-                    'backgroundColor' => 'rgba(26, 122, 122, 0.1)',
+                    'borderColor' => 'rgba(99, 102, 241, 1)',
+                    'backgroundColor' => 'rgba(99, 102, 241, 0.15)',
+                    'pointBackgroundColor' => 'rgba(139, 92, 246, 1)',
+                    'pointBorderColor' => '#fff',
+                    'pointBorderWidth' => 2,
+                    'pointRadius' => 5,
                     'fill' => true,
                     'tension' => 0.4,
                 ],

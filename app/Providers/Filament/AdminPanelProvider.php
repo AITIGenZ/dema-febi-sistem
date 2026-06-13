@@ -27,7 +27,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('')
+            ->brandName('DEMA FEBI')
+            ->brandLogo(asset('images/logo_dema_febi.png'))
+            ->brandLogoHeight('2.5rem')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->profile(\App\Filament\Pages\EditProfile::class)
             ->colors([
@@ -36,15 +38,16 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+              \App\Filament\Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\AnggotaChart::class,
                 \App\Filament\Widgets\KegiatanChart::class,
             ])
+            // Tambahkan baris di bawah ini untuk mengatur grid
+            ->databaseNotifications() // Opsional: jika ingin ada notifikasi
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

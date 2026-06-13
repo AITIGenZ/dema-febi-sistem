@@ -63,3 +63,15 @@
     background: white !important;
     border: 1px solid rgba(26,122,122,0.12) !important;
 }
+/* Sidebar item label & icon — putih */
+.fi-sidebar-item-label {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-item-icon {
+    color: #ffffff !important;
+}
+
+.fi-sidebar-group-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
