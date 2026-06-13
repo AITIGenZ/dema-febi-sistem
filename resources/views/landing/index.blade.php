@@ -341,7 +341,7 @@
 
         fetch('/kalender-data')
             .then(r => r.json())
-            .then(data => { allEvents = data; renderCalendar(); })
+            .then(data => { allEvents = data.data || data; renderCalendar(); })
             .catch(() => renderCalendar());
 
         function renderCalendar() {

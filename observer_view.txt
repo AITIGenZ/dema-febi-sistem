@@ -1,24 +1,24 @@
-<?php
+﻿<?php
 
 namespace App\Observers;
 
 use App\Models\Kegiatan;
-use App\Models\KalenderProker;
 use App\Models\User;
 use App\Services\WhatsAppService;
-use Carbon\Carbon;
 
 class KegiatanObserver
 {
     /**
-     * Saat kegiatan dibuat → kirim ke KETUA/SEKRETARIS/BENDAHARA
+     * Saat kegiatan dibuat → kirim ke ADMIN
      */
     public function created(Kegiatan $kegiatan): void
     {
-        $admins = User::role(['ketua', 'sekretaris', 'bendahara'])->get();
+        // Ambil semua admin
+        $admins = User::where('role', 'admin')->get();
 
         foreach ($admins as $admin) {
 
+            // Skip kalau tidak ada nomor
             if (empty($admin->phone)) {
                 continue;
             }
@@ -36,30 +36,12 @@ class KegiatanObserver
     }
 
     /**
-     * Saat update status → kirim ke pemohon + auto-create kalender
+     * Saat update status → kirim ke pemohon
      */
     public function updated(Kegiatan $kegiatan): void
     {
         if (!$kegiatan->isDirty('status_pengajuan')) {
             return;
-        }
-
-        // Auto-create KalenderProker saat disetujui
-        if ($kegiatan->status_pengajuan === 'disetujui') {
-            $exists = KalenderProker::where('kegiatan_id', $kegiatan->id)->exists();
-
-            if (!$exists) {
-                $tglMulai = Carbon::parse($kegiatan->tanggal);
-
-                KalenderProker::create([
-                    'kegiatan_id' => $kegiatan->id,
-                    'divisi_id'   => $kegiatan->divisi_id,
-                    'tgl_mulai'   => $tglMulai->toDateString(),
-                    'tgl_selesai' => $tglMulai->toDateString(),
-                    'status'      => 'scheduled',
-                    'is_publik'   => $kegiatan->is_publik ?? true,
-                ]);
-            }
         }
 
         $user = $kegiatan->user;
