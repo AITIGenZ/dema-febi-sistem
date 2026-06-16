@@ -39,27 +39,20 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         ];
     }
 
-    /**
-     * Logika pencarian file foto untuk Avatar Topbar Filament
-     */
     public function getFilamentAvatarUrl(): ?string
     {
-        // Jika data kolom photo di database kosong/null, tampilkan inisial (KF)
-        if (! $this->photo) {
+        if (!$this->photo) {
             return null;
         }
 
-        // 1. Jika path di database berupa URL lengkap (http:// atau https://)
         if (str_starts_with($this->photo, 'http://') || str_starts_with($this->photo, 'https://')) {
             return $this->photo;
         }
 
-        // 2. Jika foto ditaruh langsung di folder public/images/nama_file.png
         if (file_exists(public_path('images/' . $this->photo))) {
             return asset('images/' . $this->photo);
         }
 
-        // 3. Jika menggunakan sistem upload bawaan Laravel Storage (storage/app/public)
         return Storage::url($this->photo);
     }
 
@@ -69,7 +62,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             $this->hasAnyRole(['pimpinan', 'pengurus', 'super_admin']);
     }
 
-    // Relasi ke tabel divisi
     public function dinas()
     {
         return $this->belongsTo(Dinas::class, 'dinas_id');

@@ -11,6 +11,7 @@ class AnggotaChart extends ChartWidget
     {
         return auth()->user()->hasRole('pimpinan');
     }
+
     protected static ?string $heading = 'Anggota per Dinas';
     protected static ?string $description = 'Jumlah anggota aktif di setiap dinas DEMA FEBI';
     protected static ?int $sort = 2;
@@ -26,12 +27,21 @@ class AnggotaChart extends ChartWidget
         $data = $dinas->pluck('users_count')->toArray();
 
         $colors = [
-            'rgba(59, 130, 246, 0.8)',
-            'rgba(16, 185, 129, 0.8)',
-            'rgba(245, 158, 11, 0.8)',
-            'rgba(239, 68, 68, 0.8)',
-            'rgba(139, 92, 246, 0.8)',
-            'rgba(236, 72, 153, 0.8)',
+            'rgba(99, 102, 241, 0.85)',   // indigo
+            'rgba(139, 92, 246, 0.85)',   // violet
+            'rgba(16, 185, 129, 0.85)',   // emerald
+            'rgba(59, 130, 246, 0.85)',   // blue
+            'rgba(245, 158, 11, 0.85)',   // amber
+            'rgba(236, 72, 153, 0.85)',   // pink
+        ];
+
+        $borderColors = [
+            'rgba(99, 102, 241, 1)',
+            'rgba(139, 92, 246, 1)',
+            'rgba(16, 185, 129, 1)',
+            'rgba(59, 130, 246, 1)',
+            'rgba(245, 158, 11, 1)',
+            'rgba(236, 72, 153, 1)',
         ];
 
         return [
@@ -40,7 +50,9 @@ class AnggotaChart extends ChartWidget
                     'label' => 'Jumlah Anggota',
                     'data' => $data,
                     'backgroundColor' => array_slice($colors, 0, count($data)),
-                    'borderRadius' => 6,
+                    'borderColor' => array_slice($borderColors, 0, count($data)),
+                    'borderWidth' => 2,
+                    'borderRadius' => 8,
                 ],
             ],
             'labels' => $labels,
