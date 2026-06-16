@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Kegiatan extends Model
 {
@@ -17,32 +18,52 @@ class Kegiatan extends Model
         'kuota',
         'kategori',
         'is_publik',
-        'dinas_id',
+        'divisi_id',
         'created_by',
+        'status_pengajuan',
+        'approved_by',
+        'approved_at',
     ];
 
     protected $casts = [
         'tanggal' => 'datetime',
+        'approved_at' => 'datetime',
         'is_publik' => 'boolean',
     ];
 
     protected static function booted(): void
     {
         static::creating(function ($kegiatan) {
-            if (auth()->check()) {
-                $kegiatan->created_by = auth()->id();
+
+            if (Auth::check()) {
+                $kegiatan->created_by = Auth::id();
+            }
+
+            if (empty($kegiatan->status_pengajuan)) {
+                $kegiatan->status_pengajuan = 'pending';
             }
         });
     }
 
-    public function dinas()
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONSHIPS
+    |--------------------------------------------------------------------------
+    */
+
+    public function divisi()
     {
-        return $this->belongsTo(Dinas::class);
+        return $this->belongsTo(Divisi::class);
     }
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     public function pendaftarans()
@@ -64,4 +85,9 @@ class Kegiatan extends Model
     {
         return $this->hasMany(Dokumen::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
 }

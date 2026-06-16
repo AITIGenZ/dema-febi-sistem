@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KegiatanResource\Pages;
 use App\Models\Kegiatan;
-use App\Models\Dinas;
+use App\Models\Divisi;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,12 +13,11 @@ use Filament\Tables\Table;
 
 class KegiatanResource extends Resource
 {
-    use \App\Filament\Traits\PengurusCanManage;
     protected static ?string $model = Kegiatan::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $navigationLabel = 'Data Kegiatan';
     protected static ?string $modelLabel = 'Kegiatan';
-    protected static ?string $pluralModelLabel = 'Kegiatan';
     protected static ?string $navigationGroup = 'Manajemen Kegiatan';
 
     public static function form(Form $form): Form
@@ -26,6 +25,7 @@ class KegiatanResource extends Resource
         return $form->schema([
             Forms\Components\Section::make('Informasi Kegiatan')
                 ->schema([
+
                     Forms\Components\TextInput::make('nama_kegiatan')
                         ->label('Nama Kegiatan')
                         ->required()
@@ -52,27 +52,29 @@ class KegiatanResource extends Resource
                         ->maxLength(255),
 
                     Forms\Components\TextInput::make('kuota')
-                        ->label('Kuota Peserta')
+                        ->label('Kuota')
                         ->numeric()
-                        ->minValue(1)
-                        ->placeholder('Kosongkan jika tidak terbatas'),
+                        ->nullable(),
 
-                    Forms\Components\Select::make('dinas_id')
-                        ->label('Dinas Penyelenggara')
-                        ->options(Dinas::all()->pluck('nama_dinas', 'id'))
+                    Forms\Components\Select::make('divisi_id')
+                        ->label('Divisi Penyelenggara')
+                        ->options(
+                            Divisi::pluck('nama_divisi', 'id')
+                        )
                         ->searchable()
-                        ->placeholder('Pilih Dinas'),
+                        ->nullable(),
 
                     Forms\Components\Toggle::make('is_publik')
-                        ->label('Tampilkan ke Publik')
-                        ->helperText('Aktifkan agar kegiatan ini bisa dilihat mahasiswa umum')
+                        ->label('Publik')
                         ->default(false),
 
                     Forms\Components\Textarea::make('deskripsi')
-                        ->label('Deskripsi Kegiatan')
+                        ->label('Deskripsi')
                         ->rows(4)
                         ->columnSpanFull(),
-                ])->columns(2),
+
+                ])
+                ->columns(2),
         ]);
     }
 
@@ -80,53 +82,63 @@ class KegiatanResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\TextColumn::make('nama_kegiatan')
                     ->label('Nama Kegiatan')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('kategori')
-                    ->label('Kategori')
+                Tables\Columns\TextColumn::make('status_pengajuan')
+                    ->label('Status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
-                        'seminar' => 'info',
-                        'rapat' => 'warning',
-                        'pelatihan' => 'success',
-                        'sosial' => 'danger',
-                        'olahraga' => 'primary',
+                        'pending' => 'warning',
+                        'disetujui' => 'success',
+                        'ditolak' => 'danger',
                         default => 'gray',
                     }),
 
+                Tables\Columns\TextColumn::make('kategori')
+                    ->badge(),
+
                 Tables\Columns\TextColumn::make('tanggal')
-                    ->label('Tanggal')
-                    ->dateTime('d M Y, H:i')
+                    ->dateTime('d M Y H:i')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('lokasi')
-                    ->label('Lokasi')
-                    ->limit(30),
+                    ->limit(25),
 
-                Tables\Columns\TextColumn::make('kuota')
-                    ->label('Kuota')
-                    ->default('Tidak terbatas'),
+                Tables\Columns\TextColumn::make('divisi.nama_divisi')
+                    ->label('Divisi')
+                    ->badge(),
 
-                Tables\Columns\TextColumn::make('dinas.nama_dinas')
-                    ->label('Dinas')
+                Tables\Columns\TextColumn::make('createdBy.name')
+                    ->label('Pengaju')
                     ->badge()
                     ->color('info'),
+
+                Tables\Columns\TextColumn::make('approver.name')
+                    ->label('Disetujui Oleh')
+                    ->placeholder('-')
+                    ->badge()
+                    ->color('success'),
 
                 Tables\Columns\IconColumn::make('is_publik')
                     ->label('Publik')
                     ->boolean(),
 
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Dibuat')
-                    ->dateTime('d M Y')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
+
             ->filters([
+
+                Tables\Filters\SelectFilter::make('status_pengajuan')
+                    ->options([
+                        'pending' => 'Pending',
+                        'disetujui' => 'Disetujui',
+                        'ditolak' => 'Ditolak',
+                    ]),
+
                 Tables\Filters\SelectFilter::make('kategori')
                     ->options([
                         'seminar' => 'Seminar',
@@ -137,23 +149,57 @@ class KegiatanResource extends Resource
                         'lainnya' => 'Lainnya',
                     ]),
 
-                Tables\Filters\SelectFilter::make('dinas_id')
-                    ->label('Dinas')
-                    ->options(Dinas::pluck('nama_dinas', 'id')),
-
-                Tables\Filters\TernaryFilter::make('is_publik')
-                    ->label('Tampil ke Publik'),
             ])
+
             ->actions([
+
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->visible(
+                        fn($record) =>
+                        $record->status_pengajuan === 'pending'
+                    )
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+
+                        $record->update([
+                            'status_pengajuan' => 'disetujui',
+                            'approved_by' => auth()->id(),
+                            'approved_at' => now(),
+                        ]);
+                    }),
+
+                Tables\Actions\Action::make('reject')
+                    ->label('Tolak')
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+                    ->visible(
+                        fn($record) =>
+                        $record->status_pengajuan === 'pending'
+                    )
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+
+                        $record->update([
+                            'status_pengajuan' => 'ditolak',
+                        ]);
+                    }),
+
                 Tables\Actions\ViewAction::make(),
+
                 Tables\Actions\EditAction::make(),
+
                 Tables\Actions\DeleteAction::make(),
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
+
             ->defaultSort('tanggal', 'desc');
     }
 

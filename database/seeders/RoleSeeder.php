@@ -13,88 +13,183 @@ class RoleSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]
             ->forgetCachedPermissions();
 
-        // Buat semua permission
         $permissions = [
+
+            // Dashboard
+            'dashboard.view',
+
             // Anggota
             'anggota.view',
             'anggota.create',
             'anggota.edit',
             'anggota.delete',
+
             // Divisi
             'divisi.view',
             'divisi.create',
             'divisi.edit',
             'divisi.delete',
+
             // Kegiatan
             'kegiatan.view',
             'kegiatan.create',
             'kegiatan.edit',
             'kegiatan.delete',
-            // Pendaftaran
-            'pendaftaran.view',
-            'pendaftaran.create',
-            'pendaftaran.edit',
-            'pendaftaran.delete',
+
+            // Rapat
+            'rapat.view',
+            'rapat.create',
+            'rapat.edit',
+            'rapat.delete',
+            'rapat.approve',
+
             // Absensi
             'absensi.view',
             'absensi.create',
             'absensi.edit',
             'absensi.delete',
-            // Keuangan
+
+            // Pendaftaran
+            'pendaftaran.view',
+            'pendaftaran.create',
+            'pendaftaran.edit',
+            'pendaftaran.delete',
+
+            // Iuran
             'iuran.view',
             'iuran.create',
             'iuran.edit',
             'iuran.delete',
+
+            // Kas
             'kas.view',
             'kas.create',
             'kas.edit',
             'kas.delete',
+
             // Kalender
             'kalender.view',
             'kalender.create',
             'kalender.edit',
             'kalender.delete',
-            // Dashboard
-            'dashboard.view',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate([
+                'name' => $permission,
+            ]);
         }
 
-        // Role Pimpinan — semua permission
-        $pimpinan = Role::firstOrCreate(['name' => 'pimpinan']);
-        $pimpinan->syncPermissions($permissions);
+        /*
+        |--------------------------------------------------------------------------
+        | KETUA
+        |--------------------------------------------------------------------------
+        */
 
-        // Role Pengurus — terbatas
-        $pengurus = Role::firstOrCreate(['name' => 'pengurus']);
-        $pengurus->syncPermissions([
-            // Dashboard hanya lihat
+        $ketua = Role::firstOrCreate([
+            'name' => 'ketua',
+        ]);
+
+        $ketua->syncPermissions($permissions);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEKRETARIS
+        |--------------------------------------------------------------------------
+        */
+
+        $sekretaris = Role::firstOrCreate([
+            'name' => 'sekretaris',
+        ]);
+
+        $sekretaris->syncPermissions([
+
             'dashboard.view',
-            // Anggota hanya lihat
+
             'anggota.view',
-            // Divisi hanya lihat
+            'anggota.edit',
+
             'divisi.view',
-            // Kegiatan CRUD penuh
+
             'kegiatan.view',
             'kegiatan.create',
             'kegiatan.edit',
             'kegiatan.delete',
-            // Pendaftaran hanya lihat
-            'pendaftaran.view',
-            // Absensi CRUD (input absensi kegiatan)
+
+            'rapat.view',
+            'rapat.create',
+            'rapat.edit',
+            'rapat.delete',
+            'rapat.approve',
+
             'absensi.view',
             'absensi.create',
             'absensi.edit',
             'absensi.delete',
-            // Kalender CRUD (input proker divisi)
+
             'kalender.view',
             'kalender.create',
             'kalender.edit',
             'kalender.delete',
-            // Iuran & Kas hanya lihat
+
+            'pendaftaran.view',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | BENDAHARA
+        |--------------------------------------------------------------------------
+        */
+
+        $bendahara = Role::firstOrCreate([
+            'name' => 'bendahara',
+        ]);
+
+        $bendahara->syncPermissions([
+
+            'dashboard.view',
+
             'iuran.view',
+            'iuran.create',
+            'iuran.edit',
+            'iuran.delete',
+
             'kas.view',
+            'kas.create',
+            'kas.edit',
+            'kas.delete',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | PENGURUS
+        |--------------------------------------------------------------------------
+        */
+
+        $pengurus = Role::firstOrCreate([
+            'name' => 'pengurus',
+        ]);
+
+        $pengurus->syncPermissions([
+
+            'dashboard.view',
+
+            'anggota.view',
+
+            'divisi.view',
+
+            'kegiatan.view',
+            'kegiatan.create',
+
+            'rapat.view',
+            'rapat.create',
+
+            'absensi.view',
+            'absensi.create',
+
+            'kalender.view',
+
+            'pendaftaran.view',
         ]);
     }
 }

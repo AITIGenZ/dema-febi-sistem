@@ -5,6 +5,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\KalenderProkerController;
+use App\Services\WhatsAppService;
 
 // Landing Page Publik — bisa diakses tanpa login
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -21,6 +22,10 @@ Route::prefix('api/kalender')->name('api.kalender.')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/export/absensi/{id}', [PdfController::class, 'absensi'])->name('export.absensi');
     Route::get('/export/keuangan', [PdfController::class, 'keuangan'])->name('export.keuangan');
+});
+// Keuangan — hanya untuk yang sudah login
+Route::middleware(['auth'])->prefix('keuangan')->name('keuangan.')->group(function () {
+    Route::get('/monitoring', \App\Livewire\Keuangan\MonitoringKeuangan::class)->name('monitoring');
 });
 
 // Kalender Proker Protected Routes — hanya untuk yang sudah login
@@ -51,6 +56,12 @@ Route::middleware(['auth'])->prefix('api/notifications')->name('api.notification
     Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
     Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
     Route::delete('/', [NotificationController::class, 'deleteAll'])->name('delete-all');
+});
+Route::get('/test-wa', function () {
+    $response = WhatsAppService::send('6285187138174
+    ', 'Test WA dari Laravel! ✅');
+    
+    return $response->json();
 });
 
 // Admin Dashboard & Panel

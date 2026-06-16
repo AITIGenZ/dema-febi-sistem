@@ -5,71 +5,98 @@ namespace App\Http\Controllers;
 use App\Models\KalenderProker;
 use App\Models\Kegiatan;
 use App\Models\Divisi;
+use App\Http\Requests\StoreKalenderProkerRequest;
+use App\Http\Requests\UpdateKalenderProkerRequest;
+use App\Http\Resources\KalenderProkerResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KalenderProkerController extends Controller
 {
+    /**
+     * Display a listing of kalender proker.
+     */
     public function index(Request $request)
     {
         $query = KalenderProker::query()
-            ->with(['kegiatan', 'divisi'])
+            ->with(['kegiatan', 'divisi', 'creator', 'updater'])
             ->orderBy('tgl_mulai', 'asc');
 
+        // Filter by divisi if provided
         if ($request->has('divisi_id')) {
             $query->where('divisi_id', $request->divisi_id);
         }
 
+        // Filter by date range if provided
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereBetween('tgl_mulai', [
+                $request->start_date,
+                $request->end_date
+            ])->orWhereBetween('tgl_selesai', [
+                $request->start_date,
+                $request->end_date
+            ]);
+        }
+
+        // Filter by status if provided
         if ($request->has('status')) {
             $query->where('status', $request->status);
         }
 
+        // Filter publik only
         if ($request->boolean('publik_only', false)) {
             $query->where('is_publik', true);
         }
 
-        $kaleders = $query->paginate($request->get('per_page', 15));
+        $kaleders = $query->paginate($request->input('per_page', 15));
 
         return response()->json([
-            'data' => $kaleders->items(),
+            'success' => true,
+            'message' => 'Data kalender proker berhasil diambil',
+            'data' => KalenderProkerResource::collection($kaleders),
             'pagination' => [
-                'total' => $kaleders->total(),
-                'per_page' => $kaleders->perPage(),
                 'current_page' => $kaleders->currentPage(),
+                'per_page' => $kaleders->perPage(),
+                'total' => $kaleders->total(),
                 'last_page' => $kaleders->lastPage(),
             ]
         ]);
     }
 
+    /**
+     * Show the form for creating a new kalender proker.
+     */
     public function create()
     {
+        $kegiatans = Kegiatan::all();
+        $divisis = Divisi::all();
+
         return response()->json([
             'success' => true,
+            'message' => 'Data form untuk membuat kalender proker',
             'data' => [
-                'kegiatans' => Kegiatan::all(),
-                'divisis' => Divisi::all(),
+                'kegiatans' => $kegiatans,
+                'divisis' => $divisis,
             ]
         ]);
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created kalender proker in storage.
+     */
+    
+    public function store(StoreKalenderProkerRequest $request)
     {
-        $request->validate([
-            'kegiatan_id' => 'required|exists:kegiatans,id',
-            'divisi_id' => 'nullable|exists:divisis,id',
-            'tgl_mulai' => 'required|date',
-            'tgl_selesai' => 'nullable|date|after_or_equal:tgl_mulai',
-            'warna' => 'nullable|string|max:20',
-            'is_publik' => 'boolean',
-        ]);
-
         try {
-            $kalender = KalenderProker::create($request->all());
-            $kalender->load(['kegiatan', 'divisi']);
+            $data = $request->validated();
+
+            $kalender = KalenderProker::create($data);
+            $kalender->load(['kegiatan', 'divisi', 'creator', 'updater']);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Kalender proker berhasil dibuat',
-                'data' => $kalender
+                'data' => new KalenderProkerResource($kalender)
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -79,58 +106,66 @@ class KalenderProkerController extends Controller
         }
     }
 
+    /**
+     * Display the specified kalender proker.
+     */
     public function show(KalenderProker $kalenderProker)
     {
-        $kalenderProker->load(['kegiatan', 'divisi']);
+        $kalenderProker->load(['kegiatan', 'divisi', 'creator', 'updater']);
 
         return response()->json([
             'success' => true,
-            'data' => $kalenderProker
+            'message' => 'Detail kalender proker',
+            'data' => new KalenderProkerResource($kalenderProker)
         ]);
     }
 
+    /**
+     * Show the form for editing the specified kalender proker.
+     */
     public function edit(KalenderProker $kalenderProker)
     {
         $kalenderProker->load(['kegiatan', 'divisi']);
+        $kegiatans = Kegiatan::all();
+        $divisis = Divisi::all();
 
         return response()->json([
             'success' => true,
+            'message' => 'Data form untuk edit kalender proker',
             'data' => [
-                'kalender_proker' => $kalenderProker,
-                'kegiatans' => Kegiatan::all(),
-                'divisis' => Divisi::all(),
+                'kalender_proker' => new KalenderProkerResource($kalenderProker),
+                'kegiatans' => $kegiatans,
+                'divisis' => $divisis,
             ]
         ]);
     }
 
-    public function update(Request $request, KalenderProker $kalenderProker)
+    /**
+     * Update the specified kalender proker in storage.
+     */
+    public function update(UpdateKalenderProkerRequest $request, KalenderProker $kalenderProker)
     {
-        $request->validate([
-            'kegiatan_id' => 'sometimes|exists:kegiatans,id',
-            'divisi_id' => 'nullable|exists:divisis,id',
-            'tgl_mulai' => 'sometimes|date',
-            'tgl_selesai' => 'nullable|date',
-            'warna' => 'nullable|string|max:20',
-            'is_publik' => 'boolean',
-        ]);
-
         try {
-            $kalenderProker->update($request->all());
-            $kalenderProker->load(['kegiatan', 'divisi']);
+            $data = $request->validated();
+            $kalenderProker->update($data);
+            $kalenderProker->load(['kegiatan', 'divisi', 'creator', 'updater']);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Kalender proker berhasil diperbarui',
-                'data' => $kalenderProker
+                'data' => new KalenderProkerResource($kalenderProker)
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal memperbarui: ' . $e->getMessage()
+                'message' => 'Gagal memperbarui kalender proker: ' . $e->getMessage()
             ], 500);
         }
     }
 
+    /**
+     * Remove the specified kalender proker from storage.
+     */
     public function destroy(KalenderProker $kalenderProker)
     {
         try {
@@ -143,37 +178,45 @@ class KalenderProkerController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal menghapus: ' . $e->getMessage()
+                'message' => 'Gagal menghapus kalender proker: ' . $e->getMessage()
             ], 500);
         }
     }
 
+    /**
+     * Get events for calendar (FullCalendar format)
+     */
     public function getCalendarEvents(Request $request)
     {
         $query = KalenderProker::query()
             ->with(['kegiatan', 'divisi']);
 
+        // Filter by divisi if provided
         if ($request->has('divisi_id')) {
             $query->where('divisi_id', $request->divisi_id);
         }
 
-        if (!auth()->check()) {
+        // Publik only if not authenticated
+        if (!Auth::check()) {
             $query->where('is_publik', true);
         }
 
-        $events = $query->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'title' => $item->kegiatan->nama_kegiatan ?? 'Kegiatan',
-                'start' => $item->tgl_mulai,
-                'end' => $item->tgl_selesai,
-                'color' => $item->warna ?? '#3B82F6',
-                'extendedProps' => [
-                    'divisi' => $item->divisi->nama_divisi ?? 'DEMA FEBI',
-                    'is_publik' => $item->is_publik,
-                ]
+        $events = [];
+        foreach ($query->get() as $event) {
+            $eventOptions = $event->getEventOptions();
+            $events[] = [
+                'id' => $event->id,
+                'title' => $event->getTitle(),
+                'start' => $event->getStart(),
+                'end' => $event->getEnd(),
+                'allDay' => $event->isAllDay(),
+                'color' => $eventOptions['color'] ?? '#3788d8',
+                'textColor' => $eventOptions['textColor'] ?? '#ffffff',
+                'borderColor' => $eventOptions['borderColor'] ?? '#3788d8',
+                'className' => $eventOptions['className'] ?? 'event-default',
+                'extendedProps' => $eventOptions['extendedProps'] ?? [],
             ];
-        });
+        }
 
         return response()->json([
             'success' => true,
@@ -182,18 +225,21 @@ class KalenderProkerController extends Controller
         ]);
     }
 
+    /**
+     * Get event options for display
+     */
     public function getEventOptions(KalenderProker $kalenderProker)
     {
         return response()->json([
             'success' => true,
-            'data' => [
-                'id' => $kalenderProker->id,
-                'title' => $kalenderProker->kegiatan->nama_kegiatan ?? 'Kegiatan',
-                'color' => $kalenderProker->warna ?? '#3B82F6',
-            ]
+            'message' => 'Event options kalender proker',
+            'data' => $kalenderProker->getEventOptions()
         ]);
     }
 
+    /**
+     * Bulk update status
+     */
     public function bulkUpdateStatus(Request $request)
     {
         $request->validate([
@@ -203,12 +249,11 @@ class KalenderProkerController extends Controller
         ]);
 
         try {
-            KalenderProker::whereIn('id', $request->ids)
-                ->update(['status' => $request->status]);
+            KalenderProker::whereIn('id', $request->ids)->update(['status' => $request->status]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Status berhasil diperbarui'
+                'message' => 'Status kalender proker berhasil diperbarui'
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -218,21 +263,69 @@ class KalenderProkerController extends Controller
         }
     }
 
+    /**
+     * Change status to ongoing
+     */
     public function markOngoing(KalenderProker $kalenderProker)
     {
-        $kalenderProker->update(['status' => 'ongoing']);
-        return response()->json(['success' => true, 'message' => 'Event sedang berlangsung']);
+        try {
+            $kalenderProker->update(['status' => 'ongoing']);
+            $kalenderProker->load(['kegiatan', 'divisi', 'creator', 'updater']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Event berhasil ditandai sedang berlangsung',
+                'data' => new KalenderProkerResource($kalenderProker)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
+    /**
+     * Change status to completed
+     */
     public function markCompleted(KalenderProker $kalenderProker)
     {
-        $kalenderProker->update(['status' => 'completed']);
-        return response()->json(['success' => true, 'message' => 'Event selesai']);
+        try {
+            $kalenderProker->update(['status' => 'completed']);
+            $kalenderProker->load(['kegiatan', 'divisi', 'creator', 'updater']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Event berhasil ditandai selesai',
+                'data' => new KalenderProkerResource($kalenderProker)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
+    /**
+     * Change status to cancelled
+     */
     public function markCancelled(KalenderProker $kalenderProker)
     {
-        $kalenderProker->update(['status' => 'cancelled']);
-        return response()->json(['success' => true, 'message' => 'Event dibatalkan']);
+        try {
+            $kalenderProker->update(['status' => 'cancelled']);
+            $kalenderProker->load(['kegiatan', 'divisi', 'creator', 'updater']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Event berhasil dibatalkan',
+                'data' => new KalenderProkerResource($kalenderProker)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membatalkan event: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

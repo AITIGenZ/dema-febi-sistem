@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Absensi;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
-use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar
+class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
@@ -21,7 +20,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'email',
         'phone',
         'photo',
-        'dinas_id',
+        'divisi_id',
         'status',
         'password',
     ];
@@ -39,32 +38,26 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         ];
     }
 
-    public function getFilamentAvatarUrl(): ?string
-    {
-        if (!$this->photo) {
-            return null;
-        }
-
-        if (str_starts_with($this->photo, 'http://') || str_starts_with($this->photo, 'https://')) {
-            return $this->photo;
-        }
-
-        if (file_exists(public_path('images/' . $this->photo))) {
-            return asset('images/' . $this->photo);
-        }
-
-        return Storage::url($this->photo);
-    }
-
+    // Hanya user aktif yang bisa akses panel Filament
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->status === 'aktif' &&
-            $this->hasAnyRole(['pimpinan', 'pengurus', 'super_admin']);
+        return $this->status === 'aktif';
     }
 
-    public function dinas()
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    public function divisi()
     {
-        return $this->belongsTo(Dinas::class, 'dinas_id');
+        return $this->belongsTo(Divisi::class);
+    }
+
+    public function absensis()
+    {
+        return $this->hasMany(Absensi::class);
     }
 
     public function notifications()
@@ -72,8 +65,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasMany(
             'Illuminate\Notifications\DatabaseNotification',
             'notifiable_id'
-        )->where('notifiable_type', self::class)
-            ->orderBy('created_at', 'desc');
+        )
+        ->where('notifiable_type', self::class)
+        ->orderBy('created_at', 'desc');
     }
 
     public function unreadNotifications()
