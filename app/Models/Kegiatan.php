@@ -18,7 +18,7 @@ class Kegiatan extends Model
         'kuota',
         'kategori',
         'is_publik',
-        'divisi_id',
+        'dinas_id',
         'created_by',
         'status_pengajuan',
         'approved_by',
@@ -34,26 +34,18 @@ class Kegiatan extends Model
     protected static function booted(): void
     {
         static::creating(function ($kegiatan) {
-
             if (Auth::check()) {
                 $kegiatan->created_by = Auth::id();
             }
-
             if (empty($kegiatan->status_pengajuan)) {
                 $kegiatan->status_pengajuan = 'pending';
             }
         });
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONSHIPS
-    |--------------------------------------------------------------------------
-    */
-
-    public function divisi()
+    public function dinas()
     {
-        return $this->belongsTo(Divisi::class);
+        return $this->belongsTo(Dinas::class, 'dinas_id');
     }
 
     public function createdBy()
@@ -85,9 +77,9 @@ class Kegiatan extends Model
     {
         return $this->hasMany(Dokumen::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
 }
